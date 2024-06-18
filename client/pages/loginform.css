@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dosis:wght@200;300&family=Manrope:wght@300&family=Noto+Sans+Thai&family=Nunito+Sans&family=Pacifico&family=Poppins&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.wrapper {
+  width: 420px;
+  background: rgb(80, 4, 4);
+  color: white;
+  border-radius: 20px;
+  padding: 30px 40px;
+  
+}
+
+.wrapper h1 {
+  font-size: 35px;
+  text-align: center;
+}
+
+.wrapper .input-box {
+  position: relative;
+  width: 100px;
+  height: 50px;
+  margin: 30px 0;
+}
+
+.input-box input {
+  width: 350px;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, .2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #ffff;
+  padding: 20px 45px 20px 20px;
+  transition: 300ms;
+}
+
+.input-box input::placeholder {
+  color: #ffff;
+  opacity: 50%;
+  /* padding-left: 10px ; */
+}
+
+.input-box input:hover {
+  background-color: rgb(187, 179, 239);
+}
+
+.input-box .icon{
+  margin-right: 5px;
+}
+
+.wrapper .remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14.5px;
+  margin: 15px 0 15px;
+}
+
+.remember-forgot label input {
+  accent-color: #fff;
+  margin-right: 3px;
+}
+
+.remember-forgot a{
+  color: #fff;
+  text-decoration: none;
+}
+
+.wrapper .register {
+  font-size: 14.5px;
+  margin-top: 10px;
+}
+
+.register a{
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 300ms;
+}
+
+.register a:hover{
+  text-decoration: underline;
+  text-decoration-color: mediumaquamarine;
+}
+
+.remember-forgot a:hover{
+  text-decoration: underline;
+}
+
+.wrapper .btn-login {
+  width: 100%;
+  height: 45px;
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  transition: 300ms;
+}
+
+.wrapper .btn-login:hover {
+  background-color: mediumaquamarine;;
+  color: #fff;
+  transform: scale(1.1);
+}
