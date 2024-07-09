@@ -1,17 +1,11 @@
 const express = require('express')
-const mysql = require('mysql2')
-const bcrypt = require('bcrypt')
 
+const connectdb = require('./connectdb.js')
+const userRoutes = require('./routes/users.js');
+const authRoutes = require('./routes/auth.js');
 
 const PORT = 2000;
 const app = express();
-
-const connectdb = mysql.createConnection({
-  user: 'root',
-  host: 'localhost',
-  database: 'TumDee_DB',
-  password: '',
-});
 
 connectdb.connect();
 
@@ -25,7 +19,12 @@ app.get('/', (req, res) => {
   })
 })
 
+// routes
+app.use("/api/users",userRoutes)
+app.use('/api/authenticate',authRoutes)
+
 
 app.listen(2000, () =>
   console.log('Listening on Port', PORT)
 )
+
