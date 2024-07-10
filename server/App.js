@@ -1,11 +1,14 @@
 const express = require('express')
-
+const cors = require('cors');
 const connectdb = require('./connectdb.js')
 const userRoutes = require('./routes/users.js');
 const authRoutes = require('./routes/auth.js');
 
 const PORT = 2000;
 const app = express();
+
+app.use(express.json());
+app.use(cors({origin: "http://localhost:5173",}));
 
 connectdb.connect();
 
@@ -21,7 +24,7 @@ app.get('/', (req, res) => {
 
 // routes
 app.use("/api/users",userRoutes)
-app.use('/api/authenticate',authRoutes)
+app.use("/api/authenticate",authRoutes)
 
 
 app.listen(2000, () =>

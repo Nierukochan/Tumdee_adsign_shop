@@ -1,23 +1,26 @@
 const db = require('../connectdb.js')
 const bcrypt = require('bcrypt')
+const { v4: uuidv4 } = require('uuid');
 
 const register = async (req, res) => {
   // res.send("register")
-  const { email, password } = await req.body;
+  const email = await req.body.email;
+  const password = await req.body.password;
   //Check user if exists
   db.query("SELECT * FROM customer WHERE email = ?", email, async (err, data) => {
     if (err) {
       return res.status(500).json(err)
     }
     if (data.length) {
-      return res.status(400).json("Email already exists")
+      return res.status(409).json("Email already exists")
     }
 
     //Create a new user and encode
     const hashedpassword = await bcrypt.hash(password, 10);
     const fullName = req.body.name + " " + req.body.lastname;
-
+    const testid = uuidv4();
     const cusdata = await [
+      testid,
       fullName,
       req.body.tel,
       req.body.address,
@@ -43,7 +46,7 @@ const login = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-  //res.send('logout')
+  res.send('logout')
 }
 
 
