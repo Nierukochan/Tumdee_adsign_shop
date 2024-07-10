@@ -3,11 +3,12 @@ const cors = require('cors');
 const connectdb = require('./connectdb.js')
 const userRoutes = require('./routes/users.js');
 const authRoutes = require('./routes/auth.js');
-
+const cookieParser = require('cookie-parser')
 const PORT = 2000;
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors({origin: "http://localhost:5173",}));
 
 connectdb.connect();
