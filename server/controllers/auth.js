@@ -49,7 +49,7 @@ const login = async (req, res) => {
     }
 
     try {
-      const checkPassword = bcrypt.compareSync(
+        const checkPassword = bcrypt.compareSync(
         await req.body.password,
         data[0].password
       );

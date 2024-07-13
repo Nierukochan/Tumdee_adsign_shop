@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { useState } from "react"
 import './registerform.css'
-import { Link } from "react-router-dom"
 import React from 'react'
 
 function Register() {
@@ -28,11 +27,11 @@ function Register() {
       await axios.post("http://localhost:2000/api/authenticate/register",inputs)
       setErr(null);
     } catch (err) {
-      console.error('Error during registration:', err);
+      console.error('Error while registration:', err);
       if (err.response) {
         setErr(err.response.data);
       } else {
-        setErr("An error occurred. Please try again.");
+        setErr("Please try again.");
       }
     }
   }
@@ -77,7 +76,9 @@ function Register() {
         {err && err}
         <button onClick={handleClick} type="submit" className="btn-login">Sign-in</button>
 
-        <p>Already have an account?</p>
+        <div className="register">
+          <p>Already have an account?</p>
+        </div>
       </div>
     </div>
   )

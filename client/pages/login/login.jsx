@@ -1,12 +1,38 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './loginform.css'
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 
 function Login() {
-  return ( 
-    
+
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: ""
+  })
+
+  const [err, setErr] = useState(null)
+
+  //const navigate = useNavigate()
+
+  const handleChange = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+
+    try {
+      await axios.post("http://localhost:2000/api/authenticate/login",inputs)
+      //navigate("/")
+      setErr(null)
+    } catch (err) {
+      setErr(err.response.data)
+    }
+  }
+
+  return (
+
     <div>
       <div className='wrapper'>
         <form action=""></form>
@@ -14,13 +40,13 @@ function Login() {
         <div className='input-box'>
           <MdAlternateEmail className='icon' />
           <label htmlFor="email">Email</label>
-          <input type="email" placeholder='Enter Email'/>
+          <input type="email" placeholder='Enter Email' />
         </div>
 
         <div className='input-box'>
-          <RiLockPasswordFill className='icon'/>
+          <RiLockPasswordFill className='icon' />
           <label htmlFor="password">Password</label>
-          <input type="password" placeholder='Enter Password'/>
+          <input type="password" placeholder='Enter Password' />
         </div>
 
         <div className="remember-forgot">
@@ -35,7 +61,7 @@ function Login() {
         </div>
       </div>
     </div>)
-  
+
 }
 
 export default Login
