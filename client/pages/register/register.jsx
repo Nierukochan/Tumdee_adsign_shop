@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import './registerform.css'
 import React from 'react'
 
@@ -20,11 +21,14 @@ function Register() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  const navigator = useNavigate()
+
   const handleClick = async (e) => {
     e.preventDefault();
 
     try {
       await axios.post("http://localhost:2000/api/authenticate/register",inputs)
+      navigator('/')
       setErr(null);
     } catch (err) {
       console.error('Error while registration:', err);
@@ -77,7 +81,9 @@ function Register() {
         <button onClick={handleClick} type="submit" className="btn-login">Sign-in</button>
 
         <div className="register">
-          <p>Already have an account?</p>
+          <Link to="/login">
+           <p>Already have an account?</p>
+          </Link>
         </div>
       </div>
     </div>

@@ -18,15 +18,16 @@ const register = async (req, res) => {
 
     //Create a new user and encode
     const hashedpassword = await bcrypt.hash(password, 10);
-    const fullName = req.body.name + " " + req.body.lastname;
+    const fullName = await req.body.name + " " + req.body.lastname;
     const cusid = uuidv4();
+
     const cusdata = await [
       cusid,
       fullName,
       req.body.tel,
       req.body.address,
       hashedpassword,
-      req.body.email
+      req.body.email,
     ]
 
     db.query("INSERT INTO customer VALUE (?)", [cusdata], async (err) => {
@@ -57,11 +58,11 @@ const login = async (req, res) => {
       if (!checkPassword)
         return res.status(400).json("Wrong password or username!");
   
-      const token = jwt.sign({ id: data[0].id }, "secretkey");
+      const token = jwt.sign({ email: data[0].email, name: data[0].cus_name, tel: data[0].cus_tel }, "secretkey");
   
       const { password, ...others } = data[0];
 
-      res.cookie("accessToken", token, { httpOnly: true, secure: true }).status(200).json(others);
+      res.cookie("token", token, { httpOnly: true, secure: true }).status(200).json(others);
     } catch (bcryptErr) {
       console.error('Error during password comparison:', bcryptErr);
       return res.status(500).json("password comparison has been failed.");

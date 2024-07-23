@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './loginform.css'
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { AuthContext } from '../../context/authcontext.jsx'
 
 
 function Login() {
 
+  const {login} = useContext(AuthContext)
+  
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
@@ -13,7 +17,7 @@ function Login() {
 
   const [err, setErr] = useState(null)
 
-  //const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -23,11 +27,11 @@ function Login() {
     e.preventDefault()
 
     try {
-      await axios.post("http://localhost:2000/api/authenticate/login",inputs)
-      //navigate("/")
+      await login(inputs)
+      navigate("/")
       setErr(null)
     } catch (err) {
-      setErr(err.response.data)
+      setErr(err)
     }
   }
 
@@ -40,13 +44,13 @@ function Login() {
         <div className='input-box'>
           <MdAlternateEmail className='icon' />
           <label htmlFor="email">Email</label>
-          <input type="email" placeholder='Enter Email' />
+          <input name="email" onChange={handleChange} type="email" placeholder='Enter Email' />
         </div>
 
         <div className='input-box'>
           <RiLockPasswordFill className='icon' />
           <label htmlFor="password">Password</label>
-          <input type="password" placeholder='Enter Password' />
+          <input name="password" onChange={handleChange} type="password" placeholder='Enter Password' />
         </div>
 
         <div className="remember-forgot">
@@ -54,10 +58,12 @@ function Login() {
           <a href="#">Forgot password</a>
         </div>
 
-        <button type="submit" className="btn-login">Sign-in</button>
+        <button onClick={handleLogin} type="submit" className="btn-login">Sign-in</button>
 
         <div className="register">
-          <p>Don't have an account? <a href="#"></a>Register</p>
+          <Link to="/register">
+            <p>Don't have an account? Register</p>
+          </Link>
         </div>
       </div>
     </div>)
