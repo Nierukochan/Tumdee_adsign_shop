@@ -3,17 +3,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import './loginform.css'
 import { MdAlternateEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-import { AuthContext } from '../../context/authcontext.jsx'
+import { useAuth } from '../../context/authcontext.jsx'
 
 
 function Login() {
 
-  const {login} = useContext(AuthContext)
-  
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
   })
+
+  const { login } = useAuth();
 
   const [err, setErr] = useState(null)
 

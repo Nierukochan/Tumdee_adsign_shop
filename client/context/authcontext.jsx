@@ -1,7 +1,11 @@
 import axios from "axios";
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
 export const AuthContext = createContext();
+
+export const useAuth = () => {
+  return useContext(AuthContext)
+}
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
@@ -10,7 +14,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const login = async ( inputs ) => {
       const res = await axios.post("http://localhost:2000/api/authenticate/login", inputs, {
-        withCredentials: true
+
       })
 
       setCurrentUser(res.data)
