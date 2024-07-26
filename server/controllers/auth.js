@@ -50,16 +50,17 @@ const login = async (req, res) => {
     }
 
     try {
-        const checkPassword = bcrypt.compareSync(
+      const checkPassword = bcrypt.compareSync(
         await req.body.password,
         data[0].password
       );
-  
+
       if (!checkPassword)
         return res.status(400).json("Wrong password or username!");
-  
+
+      //Set token
       const token = jwt.sign({ email: data[0].email, name: data[0].cus_name, tel: data[0].cus_tel }, "secretkey");
-  
+
       const { password, ...others } = data[0];
 
       res.cookie("token", token, { httpOnly: true, secure: true }).status(200).json(others);
@@ -71,7 +72,10 @@ const login = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-  res.send('logout')
+  res.clearCookie("token", {
+    secure: true,
+    sameSite: "none"
+  }).status(200).json("User has been logged out.")
 }
 
 
