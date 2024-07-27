@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({origin: "*"}));
+app.use(cors({origin: "http://localhost:5173"}));
 
 connectdb.connect();
 
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
     } else {
       res.send(rows)
     }
-  })
+  }) 
 })
 
 // routes

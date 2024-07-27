@@ -1,8 +1,15 @@
-import React from 'react'
+import { useState , useEffect} from 'react'
 import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom'
 
 function homepage() {
+  const [name, setName] = useState('');
+  useEffect(() => {
+    const storedName = localStorage.getItem("user");
+    if (storedName) {
+      setName(storedName);
+    }
+  }, []);
 
   const navigator = useNavigate()
 
@@ -16,6 +23,7 @@ function homepage() {
   return (
     <div>
       <h1>Hello Manchester</h1>
+      <h1>{name}</h1>
       <br />
       <Link to="/login">
         <button type="submit" >New Log-in</button>

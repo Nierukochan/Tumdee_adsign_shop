@@ -46,10 +46,8 @@ const login = async (req, res) => {
       return res.status(500).json(err)
     }
     if (data.length === 0) {
-      return res.status(200).json("Log in has been successed")
+      return res.status(200).json("User not found")
     }
-
-    try {
       const checkPassword = bcrypt.compareSync(
         await req.body.password,
         data[0].password
@@ -59,15 +57,11 @@ const login = async (req, res) => {
         return res.status(400).json("Wrong password or username!");
 
       //Set token
-      const token = jwt.sign({ email: data[0].email, name: data[0].cus_name, tel: data[0].cus_tel }, "secretkey");
+      const token = jwt.sign({ id: data[0].id  }, "secretkey", {expiresIn:'1d'});
 
       const { password, ...others } = data[0];
 
-      res.cookie("token", token, { httpOnly: true, secure: true }).status(200).json(others);
-    } catch (bcryptErr) {
-      console.error('Error during password comparison:', bcryptErr);
-      return res.status(500).json("password comparison has been failed.");
-    }
+      res.cookie("token", token, { httpOnly: true }).status(200).json(others);
   })
 }
 
