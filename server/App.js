@@ -7,6 +7,10 @@ const cookieParser = require('cookie-parser')
 const PORT = 2000;
 const app = express();
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Credentials", true);
+  next();
+});
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({origin: "http://localhost:5173"}));

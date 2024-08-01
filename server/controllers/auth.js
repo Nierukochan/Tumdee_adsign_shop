@@ -31,7 +31,7 @@ const register = async (req, res) => {
     ]
 
     db.query("INSERT INTO customer VALUE (?)", [cusdata], async (err) => {
-      if (err) return res.status(500).json(err);
+      if (err) return res.status(500).json('server error');
       return res.status(200).json("Profile has been created.");
     })
 
@@ -39,7 +39,7 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  //res.send("login")
+  // res.send("login")
   // const {email,password} = await req.body
   db.query('SELECT * FROM customer WHERE email = ?', await [req.body.email], async (err, data) => {
     if (err) {
@@ -48,11 +48,13 @@ const login = async (req, res) => {
     if (data.length === 0) {
       return res.status(200).json("User not found")
     }
+
       const checkPassword = bcrypt.compareSync(
         await req.body.password,
         data[0].password
       );
 
+      //no cookie has stored in cookie storage
       if (!checkPassword)
         return res.status(400).json("Wrong password or username!");
 
