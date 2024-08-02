@@ -1,9 +1,10 @@
 const express = require('express')
-const { addtocart, deletecart } = require('../controllers/cart')
+const { addtocart, getcart, deletecart } = require('../controllers/cart')
 const { verifyToken } = require('../controllers/verifyToken')
 
 const router = express.Router()
 
-router.post("/test", verifyToken , addtocart)
+router.post("/addtocart", verifyToken, addtocart)
+router.post("/getcart", verifyToken, getcart)
 
 module.exports = router

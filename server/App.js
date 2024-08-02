@@ -3,6 +3,7 @@ const cors = require('cors');
 const connectdb = require('./connectdb.js')
 const userRoutes = require('./routes/users.js');
 const authRoutes = require('./routes/auth.js');
+const cartRoutes = require('./routes/cart.js')
 const cookieParser = require('cookie-parser')
 const PORT = 2000;
 const app = express();
@@ -30,6 +31,7 @@ app.get('/', (req, res) => {
 // routes
 app.use("/api/users",userRoutes)
 app.use("/api/authenticate",authRoutes)
+app.use("/api/cart",cartRoutes)
 
 
 app.listen(2000, () =>
