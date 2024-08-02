@@ -14,19 +14,19 @@ app.use((req, res, next) => {
 });
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({origin: "http://localhost:5173"}));
+app.use(cors({origin: "*"}));
 
 connectdb.connect();
 
-app.get('/', (req, res) => {
-  connectdb.query('SELECT cus_name,cus_address FROM Customer ORDER BY cus_id ASC', (err, rows) => {
-    if (err) {
-      res.send(err);
-    } else {
-      res.send(rows)
-    }
-  }) 
-})
+// app.get('/', (req, res) => {
+//   connectdb.query('SELECT cus_name,cus_address FROM Customer ORDER BY cus_id ASC', (err, rows) => {
+//     if (err) {
+//       res.send(err);
+//     } else {
+//       res.send(rows)
+//     }
+//   }) 
+// })
 
 // routes
 app.use("/api/users",userRoutes)

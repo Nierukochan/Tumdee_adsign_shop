@@ -2,12 +2,15 @@ const db = require('../connectdb.js')
 
 const addtocart = async (req,res) => {
   
-  //const cus_id = localStorage.getItem("user")
+  const userID = req.query.cus_id
   const product = await [
-    req.user.cus_id,
+    userID,
     req.body.product_id,
     req.body.qty
   ]
+
+  console.log(userID)
+  
   db.query("INSERT INTO cart VALUE (?)", [product], async (err) => {
     if (err) return res.status(500).json('server error')
     return res.status(200).json('Added to cart.')
@@ -16,10 +19,9 @@ const addtocart = async (req,res) => {
 }
 
 const getcart = async (req,res) => {
-
   db.query("SELECT * FROM cart WHERE cus_id = ?",await [req.uer.cus_id], async (err, data) => {
     if(err) return res.status(500).json(err)
-    return res.status(200).json(data)
+    return res.status(200).json('its worked',data)
   })
 }
 
