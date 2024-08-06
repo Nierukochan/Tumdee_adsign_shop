@@ -1,17 +1,24 @@
 const jwt = require('jsonwebtoken')
 
 //authenticate
-const verifyToken = async (req,res,next) => {
-  const authHeader = req.headers.token;
-  if (authHeader) {
-    const token = authHeader.split(" ")[1]
-    jwt.verify(token, "token", (err, user) => {
-      if (err) res.status(403).json('Invalid token.')
-      req.user = user
+const verifyToken = async (req, res, next) => {
+  try {
+    const tokenkun = req.headers.token;
+    if (!tokenkun) {
+      return res.status(401).send('You re not Autenticated')
+    }
+    
+  const splitedtoken = tokenkun.split(" ")[1] || tokenkun;
+    jwt.verify(splitedtoken, "secretkey", (err, user) => {
+      if (err) res.status(403).json("Token is not valid!");
+      req.user = user;
       next()
     })
-  } 
-    return res.status(401).json('You re not authenticated.')
+
+  } catch (err) {
+    console.log(err)
+    res.send('sEvVer ErrOR').status(500)
+  }
 }
 
 //authorize
@@ -25,4 +32,4 @@ const verifyandAuthorize = async (req, res, next) => {
   });
 }
 
-module.exports = {verifyToken, verifyandAuthorize}
+module.exports = { verifyToken, verifyandAuthorize }

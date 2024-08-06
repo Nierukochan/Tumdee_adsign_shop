@@ -3,23 +3,24 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'
 
 function homepage() {
-  const [inputs, setInputs] = useState({
-    product_id: "",
-    qty: ""
-  })
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  const storedName = JSON.parse(localStorage.getItem("user"))
   const [name, setName] = useState('');
   useEffect(() => {
     // const storedName = localStorage.getItem("user").JSON.parse(storedName);
-    const storedName = JSON.parse(localStorage.getItem("user"))
     if (storedName) {
       setName(storedName.cus_name);
     }
   }, []);
+
+  const [inputs, setInputs] = useState({
+    product_id: "",
+    qty: ""
+  })
 
   const navigator = useNavigate()
 
@@ -28,10 +29,11 @@ function homepage() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:2000/api/cart/addtocart", inputs)
-
-    } catch (error) {
-      console.log(error)
+      await axios.post("http://localhost:2000/api/cart/addtocart",inputs)
+      navigator('/')
+      console.log(inputs)
+    } catch (err) {
+      console.error('frontend error');
     }
   }
 

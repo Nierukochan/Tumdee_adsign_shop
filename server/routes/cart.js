@@ -4,7 +4,7 @@ const { verifyToken } = require('../controllers/verifyToken')
 
 const router = express.Router()
 
-router.post("/addtocart", addtocart)
+router.post("/addtocart",verifyToken, addtocart)
 router.post("/getcart", verifyToken, getcart)
 
 module.exports = router
