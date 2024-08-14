@@ -59,7 +59,7 @@ const login = async (req, res) => {
         return res.status(400).json("Wrong password or username!");
 
       //Set token
-      const token = jwt.sign({ id: data[0].cus_id  }, "secretkey");
+      const token = jwt.sign({ cus_id: data[0].cus_id  }, "secretkey");
 
       const { password, ...others } = data[0];
 
