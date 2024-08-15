@@ -17,8 +17,8 @@ const addtocart = async (req,res) => {
     req.body.qty,
     userID
   ]
-
-  //The problem is Unauthenticated token cuz,we can't get cus_id
+  
+  //The problem is Unauthenticated cuz,we can't get cus_id how can i solve it
   //Now its worked but it still can't get cus_id error 401 not found user id
   console.log(userID)
   
@@ -26,21 +26,34 @@ const addtocart = async (req,res) => {
       if (err) return res.status(500).json('server error')
       return res.status(200).json('Added to cart.')
     })
- 
-
-  //how can i get userid from token or localstorage frontend?**
+  //now its worked 
 }
 
 const getcart = async (req,res) => {
-  db.query("SELECT * FROM cart WHERE cus_id = ?",await [req.uer.cus_id], async (err, data) => {
+  const userID = req.user.cus_id; // or wherever the user ID is stored
+    if (!userID) {
+      return res.status(404).json('User ID not found');//its worked
+    }
+  db.query("SELECT * FROM order_items WHERE cus_id = ?",userID, async (err, data) => {
     if(err) return res.status(500).json(err)
-    return res.status(200).json('its worked',data)
+    return res.status(200).json(data)
   })
 }
 
-const deletecart = async (req,res) => {
+const updatecart = async (req,res) => {
+  const items_id = req.body.product_id
+  if(!items_id) return res.status(404).json('Not found this item in your cat.')
+}
 
+const deletecart = async (req,res) => {
+  const items_id = req.body.product_id
+  if(!items_id) return res.status(404).json('Not found this item in your cat.')
+    
+  db.query("DELETE FROM order_items WHERE Order_items_id = ?",items_id, async (err, data) => {
+    if(err) return res.status(500).json(err)
+    return res.status(200).json("This items has been deleted.")
+  })
 }
 
 
-module.exports = {addtocart, getcart, deletecart}
+module.exports = {addtocart, getcart, deletecart, updatecart}
