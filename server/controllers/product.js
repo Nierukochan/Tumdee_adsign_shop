@@ -14,4 +14,8 @@ const createProducts = async (req, res) => {
   } )
 }
 
-module.exports = { getProducts }
+const deleteProduct = async (req, res) => {
+  
+}
+
+module.exports = { getProducts, createProducts }

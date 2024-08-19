@@ -11,7 +11,6 @@ function homepage() {
   const storedName = JSON.parse(localStorage.getItem("user"))
   const [name, setName] = useState('');
   useEffect(() => {
-    // const storedName = localStorage.getItem("user").JSON.parse(storedName);
     if (storedName) {
       setName(storedName.cus_name);
     }
@@ -24,16 +23,14 @@ function homepage() {
 
   const navigator = useNavigate()
 
-
   const handleClick = async (e) => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:2000/api/cart/addtocart",inputs)
-      navigator('/')
-      console.log(inputs)
+      await axios.post("http://localhost:2000/api/cart/addtocart",inputs,{withCredentials: true})
+      console.log('Product has been added in your cart',inputs)
     } catch (err) {
-      console.error('frontend error');
+      console.error(err);
     }
   }
 
@@ -46,8 +43,8 @@ function homepage() {
         <button type="submit" >New Log-in</button>
       </Link>
       <br />
-      <button type='submit'>Log-out</button>
 
+      <button type='submit'>Log-out</button>
 
       <div className="input-container">
 
