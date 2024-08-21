@@ -6,6 +6,7 @@ import { AuthContextProvider } from './context/authcontext.jsx'
 import Login from './pages/login/login';
 import Register from './pages/register/register';
 import Homepage from './pages/register/homepage';
+import Cart from './pages/cart/cart.jsx'
 import './index.css'
 
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register/>
+  },
+  {
+    path: '/cart',
+    element: <Cart/>
   }
 ])
 

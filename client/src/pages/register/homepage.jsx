@@ -23,6 +23,7 @@ function homepage() {
 
   const navigator = useNavigate()
 
+
   const handleClick = async (e) => {
     e.preventDefault();
 
