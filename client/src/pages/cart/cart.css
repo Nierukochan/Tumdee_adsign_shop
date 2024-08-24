@@ -35,6 +35,10 @@ h1 {
   font-size: xx-small;
 }
 
+.item-actions {
+  margin: 0 100px 0 0;
+}
+
 .item-actions button {
   margin-left: 10px;
 }
