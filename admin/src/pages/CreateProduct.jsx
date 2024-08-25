@@ -56,7 +56,7 @@ function createProduct() {
 
           <div className="input-con-box">
             <label htmlFor="product_detail">product_detail</label>
-            <input onChange={handleChange} type="text" name="product_price" />
+            <input onChange={handleChange} type="text" name="product_detail" />
           </div>
 
         </div>

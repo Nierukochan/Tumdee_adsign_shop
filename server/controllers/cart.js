@@ -13,7 +13,8 @@ const addtocart = async (req,res) => {
 
   const product = await [
     order_items_id,
-    req.body.product_id, 
+    // req.params.product_id, 
+    req.params.product_id, 
     req.body.qty,
     userID
   ]
@@ -34,9 +35,9 @@ const getcart = async (req,res) => {
     if (!userID) {
       return res.status(404).json('User ID not found');//its worked
     }
-  db.query("SELECT * FROM order_items WHERE cus_id = ?",userID, async (err, data) => {
+  db.query("SELECT oi.*, p.* FROM order_items oi INNER JOIN product p ON oi.product_id = p.product_id WHERE oi.cus_id = ?",[userID], async (err, data) => {
     if(err) return res.status(500).json(err)
-    return res.status(200).json(data)
+    return res.status(200).json(data) 
   })
 }
 
