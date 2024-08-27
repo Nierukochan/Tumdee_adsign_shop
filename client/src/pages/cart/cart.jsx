@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import './cart.css'
+import Navbar from "../../components/์Navbar/navbar"
 
 function Cart() {
 
@@ -20,6 +21,7 @@ function Cart() {
 
   return (
     <div className="cart-container">
+      <div><Navbar/></div>
       <h1>Your Cart</h1>
 
       {cartItems.length > 0 ? (

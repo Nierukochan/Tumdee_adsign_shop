@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'
 import Category from '../../components/Category/Category'
+import Navbar from '../../components/์Navbar/navbar'
 
 function homepage() {
 
@@ -38,13 +39,8 @@ function homepage() {
 
   return (
     <div>
-      {/* <h1>Hello Manchester</h1>
-      <span>{name}</span>
-      <br />
-      <Link to="/login">
-        <button type="submit" >New Log-in</button>
-      </Link> */}
-      <div className="">
+      <div> <Navbar/> </div>
+      <div >
         <Category/>
       </div>
     </div>

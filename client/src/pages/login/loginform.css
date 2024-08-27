@@ -1,19 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dosis:wght@200;300&family=Manrope:wght@300&family=Noto+Sans+Thai&family=Nunito+Sans&family=Pacifico&family=Poppins&display=swap');
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
 
 .wrapper {
   width: 420px;
