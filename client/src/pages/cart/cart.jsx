@@ -9,13 +9,13 @@ function Cart() {
 
   useEffect(() => {
     const fetchItems = async () => {
-      await axios.post('http://localhost:2000/api/cart/getcart', {}, { withCredentials: true }).then((response) => {
-        SetCartItems(response.data)
-      })
+      const response = await axios.post('http://localhost:2000/api/cart/getcart', {}, { withCredentials: true })
+      SetCartItems(response.data)
+      console.log(response.data)
     }
 
     fetchItems()
-    console.log(cartItems)
+    console.log('item has been fetch')
   }, [])
 
   return (
@@ -30,6 +30,8 @@ function Cart() {
                 <p className="item-order-id">items_id: {item.Order_items_id}</p>
                 <span className="item-name">Product: {item.product_id}</span>
                 <span className="item-quantity">Quantity: {item.qty}</span>
+                <span className="item-quantity">detail: {item.product_detail}</span>
+                <img src={`http://localhost:2000/${item.product_img}`} alt={item.product_name} />
               </div>
               <div className="item-actions">
                 <button>Edit</button>

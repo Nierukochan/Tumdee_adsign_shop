@@ -13,7 +13,6 @@ const addtocart = async (req,res) => {
 
   const product = await [
     order_items_id,
-    // req.params.product_id, 
     req.params.product_id, 
     req.body.qty,
     userID

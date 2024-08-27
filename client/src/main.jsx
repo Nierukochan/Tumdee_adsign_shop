@@ -8,6 +8,7 @@ import Register from './pages/register/register';
 import Homepage from './pages/register/homepage';
 import Cart from './pages/cart/cart.jsx'
 import Productdetail from './pages/Products/Productdetail.jsx'
+import Createproduct from './pages/Products/Createproduct.jsx'
 import './index.css'
 
 
@@ -29,8 +30,12 @@ const router = createBrowserRouter([
     element: <Cart/>
   },
   {
-    path: '/productdetail',
+    path: '/productdetail/:productId',
     element: <Productdetail/>
+  },
+  {
+    path: '/createProduct',
+    element: <Createproduct/>
   }
 ])
 
