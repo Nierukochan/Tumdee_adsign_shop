@@ -7,6 +7,11 @@ import Navbar from "../../components/์Navbar/navbar"
 function Cart() {
 
   const [cartItems, SetCartItems] = useState([])
+  const [remove, Setremove] = useState()
+
+  const handleRemove = (e) => {
+    Setremove()
+  }
 
   useEffect(() => {
     const fetchItems = async () => {

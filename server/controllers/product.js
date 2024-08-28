@@ -10,6 +10,13 @@ const getProducts = async (req, res) => {
     })
 }
 
+const getallProducts = async (req, res) => {
+  db.query('SELECT * FROM product',async (err, data) => {
+    if (err) return res.status(500).json(err)
+      return res.status(200).json(data)
+  })
+}
+
 
 const createProducts = async (req, res) => {
   const newproduct = await [
@@ -31,4 +38,4 @@ const deleteProduct = async (req, res) => {
 
 }
 
-module.exports = { getProducts, createProducts }
+module.exports = { getProducts, createProducts, getallProducts }

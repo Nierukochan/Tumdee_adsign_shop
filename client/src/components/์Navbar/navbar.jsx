@@ -19,7 +19,8 @@ function navbar() {
           <a href="">Product</a>
           <a href="/cart">Cart</a>
           <a href="/login">Login/Register</a>
-          <a href="">Profile</a>
+          <a href="">Contact</a>
+          <span> welcome,{name}</span>
       </nav>
     </header>
   )

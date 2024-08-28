@@ -49,11 +49,6 @@
   color: white;
   border: 0.5px solid rgb(0, 0, 0);
   cursor: pointer;
-  box-shadow: 2px 2px 0 0 white,4px 4px rgb(122, 122, 122);
+  box-shadow: 2px 20px 0 0 white,4px 4px rgb(122, 122, 122);
 }
 
-.product-action button:hover {
-  box-shadow: 3px 3px white, 6px 6px  rgb(31, 30, 30);
-  transform: translate(-2px,-2px);
-  transition: 300ms;
-}

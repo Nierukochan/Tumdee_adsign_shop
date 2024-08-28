@@ -1,5 +1,5 @@
 const express = require('express')
-const {getProducts, createProducts} = require('../controllers/product')
+const {getProducts, createProducts, getallProducts} = require('../controllers/product')
 const { verifyToken } = require('../controllers/verifyToken')
 const multer = require('multer')
 
@@ -16,6 +16,7 @@ const upload = multer({storage})
 const router = express.Router()
 
 router.post('/createProducts',upload.single('file'),createProducts)
+router.get('/getallProducts',getallProducts)
 router.get('/getProducts/:product_id', getProducts)
 
 module.exports = router

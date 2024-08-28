@@ -39,9 +39,9 @@ function homepage() {
 
   return (
     <div>
-      <div> <Navbar/> </div>
+      <div> <Navbar /> </div>
       <div >
-        <Category/>
+        <Category />
       </div>
     </div>
   )
