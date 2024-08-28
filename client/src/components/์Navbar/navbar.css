@@ -4,28 +4,65 @@
   left: 0;
   width: 100%;
   padding: 20px;
-  background: wheat;
+  background: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid  black;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
 }
 
+.header::before {
+  content:'';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(90deg, transparent,
+  rgba(255, 255, 255, .2),transparent);
+  transition: .5s;
+}
+
+.header:hover::before{
+  left:1005l
+}
+
 .logo {
+  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  -webkit-background-clip: text;
+  font-size: 18px;
+  font-weight: bold;
+  color:transparent ;
   text-decoration: none;
   font-size: 32px;
-  color: rgb(0, 0, 0);
+  color: transparent  ;
 }
 
 .navbar a {
   position: relative;
   text-decoration: none;
+  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  -webkit-background-clip: text;
   font-size: 18px;
-  color: rgb(0, 0, 0);
+  font-weight: bold;
+  color:transparent ;
   margin:0 20px 0 20px;
+  transition: .2s;
 }
 
 .navbar span{
+  background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  -webkit-background-clip: text;
+  font-size: 20px;
+  font-weight: bold;
+  color:transparent ;
   margin-left:10px;
-  
+  transition: .2s;
+}
+
+.navbar a:hover,.navbar span:hover {
+  textdecoration: dash:
+  transition: .2s;
 }

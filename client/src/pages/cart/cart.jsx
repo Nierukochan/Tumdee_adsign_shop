@@ -51,7 +51,10 @@ function Cart() {
                             <p>quantity: {item.qty}</p>
                             <p>detail: {item.product_detail}</p>
                             <p>subtotal:</p>
-                            <button className="btn-remove">Remove</button>
+                            <div className="item-actions">
+                              <button className="btn-remove">Remove</button>
+                              <button className="btn-remove">Remove</button>
+                            </div>
                           </div>
 
                         </div>
