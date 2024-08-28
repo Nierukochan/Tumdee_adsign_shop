@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import App from './App.jsx'
 import { AuthContextProvider } from './context/authcontext.jsx'
 import Login from './pages/login/login';
 import Register from './pages/register/register';

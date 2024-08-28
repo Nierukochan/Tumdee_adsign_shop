@@ -13,7 +13,7 @@ const register = async (req, res) => {
       return res.status(500).json(err)
     }
     if (data.length) {
-      return res.status(409).json("Email already exists")
+      return res.status(400).json("THis user already exist")
     }
 
     //Create a new user and encode

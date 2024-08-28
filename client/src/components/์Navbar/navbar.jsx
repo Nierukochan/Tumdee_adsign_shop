@@ -12,7 +12,7 @@ function navbar() {
     }
   }, []);
   return (
-    <header className='header'>
+    <div className='header'>
       <a href="/" className='logo'>Tumdee</a>
 
       <nav className='navbar'>
@@ -22,7 +22,7 @@ function navbar() {
           <a href="">Contact</a>
           <span> welcome,{name}</span>
       </nav>
-    </header>
+    </div>
   )
 }
 

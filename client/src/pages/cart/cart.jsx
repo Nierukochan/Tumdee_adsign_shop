@@ -25,36 +25,52 @@ function Cart() {
   }, [])
 
   return (
-    <div className="cart-container">
-      <div><Navbar/></div>
-      <h1>Your Cart</h1>
-
-      {cartItems.length > 0 ? (
-        <ul className="cart-items-list">
-          {cartItems.map(item => (
-            <li key={item.Order_items_id} className="cart-item">
-              <div className="item-details">
-                <p className="item-order-id">items_id: {item.Order_items_id}</p>
-                <span className="item-name">Product: {item.product_id}</span>
-                <span className="item-quantity">Quantity: {item.qty}</span>
-                <span className="item-quantity">detail: {item.product_detail}</span>
-                <img src={`http://localhost:2000/${item.product_img}`} alt={item.product_name} />
-              </div>
-              <div className="item-actions">
-                <button>Edit</button>
-                <button >Remove</button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Your cart is empty.</p>
-      )}
-
-      <div className="cart-actions">
-        <Link to="/" className="back-to-shop">Continue Shopping</Link>
+    <>
+      <Navbar />
+      <div className="big-box">
+        <div className="header-content">
+          <h1 className="cart-title">Cart</h1>
+        </div>
       </div>
-    </div>
+      <div className="cart-container">
+
+        <div className="items-box">
+          {cartItems.length > 0 ? (
+            <Link className="link">
+              {cartItems.map(item => (
+                <ul key={item.Order_items_id}>
+                  <div className="wrapper-cart">
+                    <div className="project">
+                      <div className="shop">
+                        <div className="box">
+                          <img src="" alt="" />
+
+                          <div className="content">
+                            <h2>Product: {item.product_name}</h2>
+                            <p>price:  {item.product_price}</p>
+                            <p>quantity: {item.qty}</p>
+                            <p>detail: {item.product_detail}</p>
+                            <p>subtotal:</p>
+                            <button className="btn-remove">Remove</button>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ul>
+              ))} </Link>) : (
+            <p>Your cart is empty.</p>
+          )}
+        </div>
+
+        <div className="order-bar">
+          <p>total:</p>
+          <hr />
+          <button className="btn-edit">Order</button>
+        </div>
+      </div>
+    </>
   )
 
 }
