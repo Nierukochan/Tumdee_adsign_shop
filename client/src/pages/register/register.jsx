@@ -43,7 +43,7 @@ function Register() {
   console.log(err)
 
   return (
-    <div>
+    <div className='regis-container'>
       <div className="wrapper">
         <h1>Sign Up</h1>
         <div className="input-box">

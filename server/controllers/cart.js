@@ -41,15 +41,25 @@ const getcart = async (req,res) => {
 }
 
 const updatecart = async (req,res) => {
-  const items_id = req.body.product_id
-  if(!items_id) return res.status(404).json('Not found this item in your cat.')
+  const order_items_id = req.params.order_id
+  const values = [
+    req.body.qty
+  ]
+  if(!order_items_id || values) return res.status(404).json('Not found this item in your cat.')
+
+    db.query('UPDATE order_items set `qty` = ? where Order_items-id = ?',[...values, order_items_id], (err,data) => {
+      if(err) return res.status(500).json(err)
+        return res.status(200).json("Cart has been updated.")
+    })
 }
 
 const deletecart = async (req,res) => {
-  const items_id = req.body.product_id
-  if(!items_id) return res.status(404).json('Not found this item in your cat.')
+  const order_items_id = req.params.order_id
+
+  console.log('order_it_it :',order_items_id)
+  if(!order_items_id) return res.status(404).json('Not found this item in your cat.')
     
-  db.query("DELETE FROM order_items WHERE Order_items_id = ?",items_id, async (err, data) => {
+  db.query("DELETE FROM order_items WHERE Order_items_id = ?",order_items_id, async (err, data) => {
     if(err) return res.status(500).json(err)
     return res.status(200).json("This items has been deleted.")
   })

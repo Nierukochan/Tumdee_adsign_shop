@@ -21,12 +21,11 @@ function Category() {
 
 
   return (
-    <div className=''> 
+    <div > 
     <div className="category-header">
       <h2>BROWSE BY CATEGORY</h2>
     </div>
-
-    
+      
     {products.length > 0 ? ( <ul className='product-ul'>
       {products.map(item => (
       <Link to={`/productdetail/${item.product_id}`}>
@@ -53,7 +52,7 @@ function Category() {
         </div>
         </Link> 
     ))}
-     </ul>):( <p>Your cart is empty.</p> )}
+     </ul>):( <p></p> )}
       
     </div>
   )

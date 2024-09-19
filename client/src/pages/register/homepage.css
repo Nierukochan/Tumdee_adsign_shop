@@ -1,0 +1,19 @@
+.header-homepage-container {
+  position: relative;
+  min-height: 150px;
+}
+
+.header-homepage-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+}
+
+.main-homepage-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20px;
+  width: 100%; 
+}

@@ -7,10 +7,14 @@ import Navbar from "../../components/์Navbar/navbar"
 function Cart() {
 
   const [cartItems, SetCartItems] = useState([])
-  const [remove, Setremove] = useState()
 
-  const handleRemove = (e) => {
-    Setremove()
+  const handleRemove = async (id) =>{
+    try {
+      await axios.delete(`http://localhost:2000/api/cart/deletecart/`+ id , { withCredentials: true })
+      window.location.reload()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
@@ -28,7 +32,7 @@ function Cart() {
     <>
       <Navbar />
       <div className="big-box">
-        <div className="header-content">
+        <div className="header-container">
           <h1 className="cart-title">Cart</h1>
         </div>
       </div>
@@ -53,7 +57,7 @@ function Cart() {
                             <p>subtotal:</p>
                             <div className="item-actions">
                               <button className="btn-remove">Remove</button>
-                              <button className="btn-remove">Remove</button>
+                              <button className="btn-remove" onClick={ e => handleRemove(item.Order_items_id)}>Edit</button>
                             </div>
                           </div>
 

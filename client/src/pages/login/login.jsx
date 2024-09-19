@@ -37,7 +37,7 @@ function Login() {
 
   return (
 
-    <div>
+    <div className='login-content'>
       <div className='wrapper'>
         <form action=""></form>
         <h1>Sign-in</h1>
@@ -66,7 +66,8 @@ function Login() {
           </Link>
         </div>
       </div>
-    </div>)
+    </div>
+  )
 
 }
 

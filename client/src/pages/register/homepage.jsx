@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'
 import Category from '../../components/Category/Category'
 import Navbar from '../../components/์Navbar/navbar'
+import './homepage.css'
 
 function homepage() {
 
@@ -38,12 +39,18 @@ function homepage() {
   }
 
   return (
-    <div>
-      <div> <Navbar /> </div>
-      <div >
+    <>
+       <Navbar />
+      <div className="header-homepage-container">
+        <div className="header-homepage-content">
+            <h1>Homepage</h1>
+        </div>
+      </div>
+
+      <div className='main-homepage-content'>
         <Category />
       </div>
-    </div>
+    </>
   )
 }
 

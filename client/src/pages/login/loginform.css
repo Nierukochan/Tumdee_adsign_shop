@@ -1,12 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dosis:wght@200;300&family=Manrope:wght@300&family=Noto+Sans+Thai&family=Nunito+Sans&family=Pacifico&family=Poppins&display=swap');
 
+.login-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items:center;
+  height: 100vh;
+}
+
 .wrapper {
   width: 420px;
   background: rgb(238, 231, 231);
   color: rgb(0, 0, 0);
   border-radius: 10px;
   padding: 30px 40px;
-  
 }
 
 .wrapper h1 {

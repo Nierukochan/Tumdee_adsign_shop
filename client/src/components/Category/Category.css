@@ -25,6 +25,7 @@
   width: 100 %;
   background-color: grey;
   padding: 40px 0;
+  align-items: center;  
 }
 
 .slide-content{

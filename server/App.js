@@ -17,7 +17,10 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors({origin: 'http://localhost:5173'}));
 
-connectdb.connect();
+connectdb.connect((err) => {
+  if(err) return res.status(500).send('connection has an error')
+  console.log('Connected!!')
+})
 
 // app.get('/', (req, res) => {
 //   connectdb.query('SELECT cus_name,cus_address FROM Customer ORDER BY cus_id ASC', (err, rows) => {
