@@ -1,0 +1,10 @@
+.update-product-content    {
+    width: 1000px;
+    height: 700px;
+    display: flex;
+    padding: 20px 100px;
+    background: #fff;
+    transition: all 0.6s ease;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    margin-left: 50px;
+}

@@ -16,6 +16,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({origin: 'http://localhost:5173'}));
+app.use(express.static('public'))
 
 connectdb.connect((err) => {
   if(err) return res.status(500).send('connection has an error')

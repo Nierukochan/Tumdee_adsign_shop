@@ -38,7 +38,7 @@ function Category() {
                   <span className='overlay'></span>
 
                   <div className="card-image">
-                    <img src="https://degqkf7c4iqz7.cloudfront.net/joyprinto/images/product/ST0128.jpg" alt="" className='card-img'/>
+                    <img src={`http://localhost:2000/images/`+ item.product_img} alt="" className='card-img'/>
                   </div>
                 </div>
 

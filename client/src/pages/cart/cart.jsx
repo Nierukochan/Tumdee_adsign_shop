@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from "react"
 import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import './cart.css'
-import Navbar from "../../components/์Navbar/navbar"
+import Navbar from "../../components/Navbar/navbar"
 
 function Cart() {
 
@@ -19,7 +19,7 @@ function Cart() {
 
   useEffect(() => {
     const fetchItems = async () => {
-      const response = await axios.post('http://localhost:2000/api/cart/getcart', {}, { withCredentials: true })
+      const response = await axios.get('http://localhost:2000/api/cart/getcart', { withCredentials: true })
       SetCartItems(response.data)
       console.log(response.data)
     }
@@ -47,7 +47,7 @@ function Cart() {
                     <div className="project">
                       <div className="shop">
                         <div className="box">
-                          <img src="" alt="" />
+                          <img src={`http://localhost:2000/images/`+ item.product_img} alt="" />
 
                           <div className="content">
                             <h2>Product: {item.product_name}</h2>
@@ -57,7 +57,7 @@ function Cart() {
                             <p>subtotal:</p>
                             <div className="item-actions">
                               <button className="btn-remove">Remove</button>
-                              <button className="btn-remove" onClick={ e => handleRemove(item.Order_items_id)}>Edit</button>
+                              <button className="btn-remove" onClick={ e => handleRemove(item.order_items_id)}>Edit</button>
                             </div>
                           </div>
 

@@ -8,6 +8,9 @@ import Homepage from './pages/register/homepage';
 import Cart from './pages/cart/cart.jsx'
 import Productdetail from './pages/Products/Productdetail.jsx'
 import Createproduct from './pages/Products/Createproduct.jsx'
+import Manageproduct from './pages/Manageproduct/Manageproduct.jsx'
+import Updateproduct from './pages/upgradeproduct/upgradeproduct.jsx'
+
 import './index.css'
 
 
@@ -35,6 +38,15 @@ const router = createBrowserRouter([
   {
     path: '/createProduct',
     element: <Createproduct/>
+  },
+  {
+    path:'/Manageproduct',
+    element: <Manageproduct/>
+  },
+  ,
+  {
+    path:'/updateproduct/:product_id',
+    element: <Updateproduct/>
   }
 ])
 

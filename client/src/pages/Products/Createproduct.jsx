@@ -1,19 +1,25 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import Navbar from '../../components/์Navbar/navbar'
+import Navbar from '../../components/Navbar/navbar'
+import Sidebar from '../../components/manage_sidebar/manageSidebar'
 import './Createproduct.css'
+
 function Createproduct() {
 
+  const [category_name, setCategoty] = useState()
   const [file, setFile] = useState()
+  const [size, setSize] = useState({
+    size_value:"",
+    price:"",
+    product_id:""
+  })
   const [inputs, setInputs] = useState({
     product_id: "",
-    product_name: "",
-    product_price: "",
-    product_detail: "",
-    product_size: [
-      { size_value: "", price: "" }
-    ]
+    product_img:"",
+    product_name:"",
+    product_price:"",
+    product_detail:""
   })
 
   const handleChange = (e) => {
@@ -21,9 +27,31 @@ function Createproduct() {
     console.log(e.target.files)
   }
 
+  const handleCategoryChange = (e) => {
+    setCategoty((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+
+  const handleCategoryClick = async (e) => {
+    e.preventDefault()
+
+    try {
+      await axios.post('http://localhost:2000/api/product/createCategory',category_name, {withCredentials: true})
+      console.log('Category has been created',category_name)
+      // alert("Hello! I am an alert box!!");
+       window.location.reload()
+    } catch (error) {
+      
+    }
+  }
+
+  const clicktest = async (e) => {
+    e.preventDefault()
+    alert(file)
+  }
 
   const handleClick = async (e) => {
     e.preventDefault()
@@ -37,6 +65,8 @@ function Createproduct() {
     try {
       await axios.post('http://localhost:2000/api/product/createProducts', formData, { withCredentials: true })
       console.log('Product has been created', inputs)
+      window.location.reload()
+      alert("Product has been created");
     } catch (error) {
 
     }
@@ -51,19 +81,9 @@ function Createproduct() {
       </div>
 
       <div className="content-container">
-        <div className="sidebar-container">
-          <ul>
-            <li><a href="#">นามบัตร</a></li>
-            <li><a href="#">ฉลาก/สติ๊กเกอร์</a></li>
-            <li><a href="#">ใบปลิว/แผ่นพับ</a></li>
-            <li><a href="#">ตรายาง</a></li>
-            <li><a href="#">สั่งพิมพ์ในสำนักงาน</a></li>
-            <li><a href="#">อุปกรณ์ออกบูธ</a></li>
-            <li><a href="#">Calendar</a></li>
-            <li><a href="#">สินค้าขายดี</a></li>
-          </ul>
-        </div>
-
+        
+        <Sidebar/>
+        
         <div className="create">
           <div className="content-create">
             <h3>Create product</h3>
@@ -71,31 +91,31 @@ function Createproduct() {
             <hr />
             <div className="input-create">
               <label htmlFor="product_id">Product_id</label>
-              <input type="text" name="product_id" required></input>
+              <input onChange={handleChange} type="text" name="product_id" required></input>
             </div>
 
             <div className="input-create">
               <label htmlFor="product_name">Product name</label>
-              <input type="text" name="product_name" required></input>
+              <input onChange={handleChange} type="text" name="product_name" required></input>
             </div>
 
             <div className="input-create">
               <label htmlFor="product_price">Product price</label>
-              <input type="number" name="product_price" required></input>
+              <input onChange={handleChange} type="number" name="product_price" required></input>
             </div>
 
             <div className="input-create">
               <label htmlFor="product_detail">Product detail</label>
-              <input type="text" name="product_detail" required></input>
+              <input onChange={handleChange} type="text" name="product_detail" required></input>
             </div>
 
             <div className="input-create">
               <label htmlFor="product_img">Image</label>
-              <input type="file" name="product_img" required></input>
+              <input onChange={handleFileChange} type="file" name="product_img" required></input>
             </div>
 
             <div className="input-create-2">
-              <label htmlFor="product_img">Category</label>
+              <label htmlFor="category">Category</label>
               <div className="list-box">
                 <select name="countries" >
                   <option value="1">Afghanistan</option>
@@ -111,7 +131,8 @@ function Createproduct() {
             </div>
 
             <div className="create-action">
-              <button type="button">Create Product</button>
+              <button onClick={handleClick} type="submit">Create Product</button>
+              <button onClick={clicktest} type="submit">Create Product</button>
             </div>
 
             <hr />
@@ -136,11 +157,11 @@ function Createproduct() {
             
             <div className="input-create">
               <label htmlFor="category_name">Category name</label>
-              <input type="text" name="category_name" required></input>
+              <input onChange={handleCategoryChange} type="text" name="category_name" required></input>
             </div>
 
             <div className="create-action">
-              <button type="button">Create Product</button>
+              <button onClick={handleCategoryClick} type="submit">Create Product</button>
             </div>
           </div>
         </div>

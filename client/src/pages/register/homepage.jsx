@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom'
 import Category from '../../components/Category/Category'
-import Navbar from '../../components/์Navbar/navbar'
+import Navbar from '../../components/Navbar/navbar'
 import './homepage.css'
 
 function homepage() {
