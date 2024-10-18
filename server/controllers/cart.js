@@ -9,6 +9,11 @@ const addtocart = async (req,res) => {
       return res.status(401).json('User ID not found');//its worked
     }
 
+    let product_img;
+    if (req.file) {
+      product_img = req.file.filename;
+    }
+
   const order_items_id = uuidv4();
   const status_item = 'In cart'
   
@@ -19,7 +24,10 @@ const addtocart = async (req,res) => {
       const product = await [
         order_items_id,
         req.params.product_id, 
+        req.body.size,
         req.body.qty,
+        req.body.detail,
+        product_img,
         userID,
         status_item
       ]
@@ -38,22 +46,94 @@ const getcart = async (req,res) => {
       return res.status(404).json('User ID not found');//its worked
     }
 
-  db.query("SELECT oi.*, p.* FROM order_items oi INNER JOIN product p ON oi.product_id = p.product_id WHERE oi.cus_id = ? and oi.status_item = ?",[ userID, status_item ], async (err, data) => {
+  db.query("SELECT oi.*, p.* ,  SUM(oi.qty * p.product_price) as sum FROM order_items oi INNER JOIN product p ON oi.product_id = p.product_id WHERE oi.cus_id = ? and oi.status_item = ? GROUP BY oi.order_items_id",[ userID, status_item ], async (err, data) => {
     if(err) return res.status(500).json(err)
     return res.status(200).json(data) 
   })
 }
 
-const updatecart = async (req,res) => {
-  const order_items_id = req.params.order_id
-  const values = [
-    req.body.qty
-  ]
-  if(!order_items_id || values) return res.status(404).json('Not found this item in your cat.')
 
-    db.query('UPDATE order_items set `qty` = ? where Order_items-id = ?',[...values, order_items_id], (err,data) => {
+
+const getallorder = async (req, res) => {
+
+  const status_item = 'In progress'
+  const qry = `SELECT o.*, oi.*, p.* , c.* , cus.*
+                FROM order_table o 
+                INNER JOIN order_items oi ON o.order_items_id = oi.order_items_id 
+                INNER JOIN product p ON oi.product_id = p.product_id 
+                INNER JOIN category c ON p.category_id = c.category_id
+                INNER JOIN customer cus ON oi.cus_id = cus.cus_id
+                WHERE oi.status_item = ? 
+                GROUP BY o.order_items_id;`
+  
+  db.query(qry,[status_item], (err,data)=> {
+    if(err) return res.status(500).json(err)
+    return res.status(200).json(data)
+  })
+}
+
+const getcartbyid = async (req, res) => {
+  const order_items_id = req.params.order_items_id
+
+  const userID = await req.user.cus_id;
+  if(!userID) return res.status(404).json('User id not found')
+
+    db.query('SELECT oi.*, p.* FROM order_items oi INNER JOIN product p ON oi.product_id = p.product_id WHERE oi.order_items_id = ?',[order_items_id],(err,data) => {
       if(err) return res.status(500).json(err)
-        return res.status(200).json("Cart has been updated.")
+      return res.status(200).json(data)
+    })
+}
+
+const ordersales = async (req, res) => {
+  const  sqlquery = 
+  ` SELECT oi.* , p.* , SUM(oi.qty * p.product_price) AS sales 
+    FROM order_items oi 
+    INNER JOIN product p ON oi.product_id = p.product_id
+    WHERE oi.cus_id = ?
+    AND oi.status_item = 'Done'
+    GROUP BY oi.product_id`
+
+    const userID = await req.user.cus_id; // or wherever the user ID is stored
+    if (!userID) {
+      return res.status(404).json('User ID not found');//its worked
+    }
+
+    db.query(sqlquery,[userID],(err,data) => {
+      if(err) return res.status(500).json(err)
+      return res.status(200).json(data)
+    })
+}
+
+const updatecart = async (req,res) => {
+  const order_items_id = req.params.order_items_id
+
+  let task_img;
+  if (req.file) {
+    task_img = req.file.filename;
+  }
+
+  console.log(order_items_id)
+  if(!order_items_id) return res.status(404).json('Not found this item in your cat.')
+
+    db.query('SELECT * FROM order_items WHERE order_items_id = ?',order_items_id, (err,result) => {
+      if(err) return res.status(500).json(err)
+
+      if (!task_img) {
+        task_img = result[0].task_img; 
+      }
+
+      db.query('UPDATE `order_items` SET `size`= ? , `qty` = ? , `detail` = ? , `task_img` = ?  WHERE order_items_id = ?',
+        [
+          req.body.size,
+          req.body.qty,
+          req.body.detail,
+          task_img,
+          order_items_id
+        ],(err,data) => {
+            if(err) return res.status(500).json(err)
+            if (data.affectedRows > 0) return res.json("Updated!");
+            return res.status(403).json("Your can update only your cart!");
+        })
     })
 }
 
@@ -69,10 +149,12 @@ const deletecart = async (req,res) => {
   })
 }
 
+/* create an order */
 const createOrder = async (req, res) => {
 
   const order_id = uuidv4()
   const status_item = 'In cart'
+  const address_id = req.body.address_id
   
   const userID = await req.user.cus_id; // or wherever the user ID is stored
     if (!userID) {
@@ -85,7 +167,7 @@ const createOrder = async (req, res) => {
       INNER JOIN product p ON oi.product_id = p.product_id
       WHERE oi.cus_id = ? 
       AND oi.status_item = ? 
-      GROUP BY oi.product_id`
+      GROUP BY oi.order_items_id`
 
   db.query(querychan,[userID, status_item], async (err, data) => {
     if(err) return res.status(500).json(err)
@@ -100,15 +182,16 @@ const createOrder = async (req, res) => {
           order_items.order_items_id,
           order_items.total_price,
           order_items.cus_id,
+          address_id,
           emp_id,
           status_id
         ];
 
         const order_items_id = order_items.order_items_id
-        const status_item_2 = 'Done'
+        const status_item_2 = 'In progress'
       
         // Insert into order_table
-        db.query('INSERT INTO order_table (order_id, order_items_id, total_price, cus_id, emp_id, status_id) VALUES (?)', [new_order], (err) => {
+        db.query('INSERT INTO order_table (order_id, order_items_id, total_price, cus_id, address_id, emp_id, status_id) VALUES (?)', [new_order], (err) => {
           if (err) return res.status(500).json(err);
 
           db.query("UPDATE `order_items` SET `status_item`=? WHERE order_items_id = ? and status_item = 'In cart' ",
@@ -124,46 +207,19 @@ const createOrder = async (req, res) => {
 
 //test section
 
-const testorder = async (req, res) => {
-  const getItemsQuery = `SELECT cus_id, SUM(qty * product_price) AS total_price 
-                         FROM order_items WHERE status_item = 'In cart' 
-                         GROUP BY cus_id`;
+const testdashboard = async (req, res) => {
 
-  // Fetch customer data from order_items
-  db.query(getItemsQuery, (err, customers) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: 'Database error' });
-    }
+  const  sqlquery = 
+  ` SELECT oi.* , p.* , SUM(oi.qty * p.product_price) AS sales ,COUNT(oi.product_id) AS product_count 
+    FROM order_items oi 
+    INNER JOIN product p ON oi.product_id = p.product_id
+    WHERE oi.status_item = 'Done'
+    GROUP BY oi.product_id`
 
-    // Insert orders into order_table for each customer
-    const insertOrderQuery = `INSERT INTO order_table (order_id, cus_id, total_price, order_status) 
-                              VALUES (UUID(), ?, ?, 'Pending')`;
-
-    customers.forEach((customer) => {
-      db.query(insertOrderQuery, [customer.cus_id, customer.total_price], (err, result) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Error inserting into order_table' });
-        }
-
-        // Get the inserted order_id
-        const orderId = result.insertId;
-
-        // Update order_items with the order_id
-        const updateItemsQuery = `UPDATE order_items SET order_id = ? 
-                                  WHERE cus_id = ? AND status_item = 'In cart'`;
-
-        db.query(updateItemsQuery, [orderId, customer.cus_id], (err, updateResult) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error updating order_items' });
-          }
-        });
-      });
-    });
-    res.status(200).json({ message: 'Orders processed successfully!' });
-  });
+    db.query(sqlquery,(err,data) => {
+      if(err) return res.status(500).json(err)
+      return res.status(200).json(data)
+    })
 }
 
 const testorder2 = async (req, res) => {
@@ -174,9 +230,9 @@ const testorder2 = async (req, res) => {
     INNER JOIN product p ON oi.product_id = p.product_id
     WHERE oi.cus_id = ? 
     AND oi.status_item = ? 
-    GROUP BY oi.product_id`
+    GROUP BY oi.order_items_id`
 
-  const status_item = 'In cart'
+  const status_item = 'Done'
   
   const userID = await req.user.cus_id; // or wherever the user ID is stored
     if (!userID) {
@@ -189,5 +245,23 @@ const testorder2 = async (req, res) => {
     })
 }
 
+const getaddress = async (req,res) => {
 
-module.exports = {addtocart, getcart, deletecart, updatecart, testorder2, createOrder}
+  const querychan = `SELECT c.cus_name, c.cus_tel , a.* FROM customer c
+                     INNER JOIN address a ON a.cus_id = c.cus_id
+                     WHERE c.cus_id = ?
+                     GROUP BY a.address_id `
+
+  const userID = await req.user.cus_id; // or wherever the user ID is stored
+    if (!userID) {
+      return res.status(404).json('User ID not found');//its worked
+    }
+
+    db.query(querychan,[userID],(err, data) => {
+      if(err) return res.status(500).json(err)
+      return res.status(200).json(data)
+    })
+}
+
+
+module.exports = {addtocart, getcart, deletecart, updatecart, testorder2, createOrder, testdashboard, getcartbyid, getallorder, getaddress}

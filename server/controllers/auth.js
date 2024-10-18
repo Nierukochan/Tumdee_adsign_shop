@@ -74,4 +74,17 @@ const logout = async (req, res) => {
   }).status(200).json("User has been logged out.")
 }
 
-module.exports = { login, register, logout };
+const getuser = async (req, res) => {
+  
+  const userID = req.user.cus_id; // or wherever the user ID is stored
+    if (!userID) {
+      return res.status(401).json('User ID not found');//its worked
+    }
+
+    db.query('SELECT c.* , a.* FROM customer c INNER JOIN address a ON c.cus_id = a.cus_id WHERE c.cus_id = ? GROUP BY a.address_id',[userID], (err, data) => {
+      if(err) return res.status(500).json(err)
+      return res.status(200).json(data)
+    })
+}
+
+module.exports = { login, register, logout, getuser };

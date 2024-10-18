@@ -5,6 +5,7 @@ const userRoutes = require('./routes/users.js');
 const authRoutes = require('./routes/auth.js');
 const cartRoutes = require('./routes/cart.js')
 const productRoutes = require('./routes/product.js')
+const orderRoutes = require('./routes/order.js')
 const cookieParser = require('cookie-parser')
 const PORT = 2000;
 const app = express();
@@ -38,6 +39,7 @@ app.use("/api/users",userRoutes)
 app.use("/api/authenticate",authRoutes)
 app.use("/api/cart",cartRoutes)
 app.use("/api/product",productRoutes)
+app.use("/api/order",orderRoutes)
 
 
 app.listen(2000, () =>

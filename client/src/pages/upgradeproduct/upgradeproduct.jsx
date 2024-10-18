@@ -59,7 +59,7 @@ function UpdateProduct() {
     formData.append('product_price', inputs.product_price);
     formData.append('product_detail', inputs.product_detail);
 
-    // Append the file only if a new file is selected
+    
     if (file) {
       formData.append('file', file);
     }
@@ -67,7 +67,7 @@ function UpdateProduct() {
     try {
       await axios.put(`http://localhost:2000/api/product/updateproduct/${inputs.product_id}`, formData, {withCredentials: true,});
       alert('Product has been updated');
-      window.location.reload(); // Optionally reload the page or redirect
+      window.location.reload(); 
     } catch (error) {
       console.error('Error updating product:', error);
       alert('Failed to update the product');

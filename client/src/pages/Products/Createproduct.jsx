@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Navbar from '../../components/Navbar/navbar'
 import Sidebar from '../../components/manage_sidebar/manageSidebar'
@@ -7,7 +7,9 @@ import './Createproduct.css'
 
 function Createproduct() {
 
-  const [category_name, setCategoty] = useState()
+  const [category_name, setCategoty] = useState() /* for new category */
+  const [category, Setcategory] = useState([]) /* fetch category */
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [file, setFile] = useState()
   const [size, setSize] = useState({
     size_value:"",
@@ -19,8 +21,25 @@ function Createproduct() {
     product_img:"",
     product_name:"",
     product_price:"",
-    product_detail:""
+    product_detail:"",
+    category_id:""
   })
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const response = await axios.get('http://localhost:2000/api/product/getcategory', { withCredentials: true })
+      Setcategory(response.data)
+      console.log(response.data)
+    }
+    fetchItems()
+    console.log('item has been fetch')
+  }, [])
+
+  const handleChangeforCategory = (e) => {
+    const selectedValue = e.target.value
+    setSelectedCategory(selectedValue)       
+  }
+
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -62,6 +81,7 @@ function Createproduct() {
     formData.append('product_price', inputs.product_price);
     formData.append('product_detail', inputs.product_detail);
     formData.append('file', file);
+    formData.append('category_id',selectedCategory)
     try {
       await axios.post('http://localhost:2000/api/product/createProducts', formData, { withCredentials: true })
       console.log('Product has been created', inputs)
@@ -117,22 +137,21 @@ function Createproduct() {
             <div className="input-create-2">
               <label htmlFor="category">Category</label>
               <div className="list-box">
-                <select name="countries" >
-                  <option value="1">Afghanistan</option>
-                  <option value="2">Australia</option>
-                  <option value="3">Germany</option>
-                  <option value="4">Canada</option>
-                  <option value="5">Russia</option>
-                  <option value="3">Germany</option>
-                  <option value="4">Canada</option>
-                  <option value="5">Russia</option>
+                <select name="category" onChange={handleChangeforCategory}>
+                {category.length > 0 ? (
+                  <>
+                    {category.map(item => ( 
+                      <option value={item.category_id}>{item.category_name}</option>
+                    ))} </>):(
+                      <p></p>
+                  )}
                 </select>
               </div>
             </div>
 
             <div className="create-action">
               <button onClick={handleClick} type="submit">Create Product</button>
-              <button onClick={clicktest} type="submit">Create Product</button>
+              {/* <button onClick={clicktest} type="submit">Create Product</button> */}
             </div>
 
             <hr />

@@ -10,6 +10,11 @@ import Productdetail from './pages/Products/Productdetail.jsx'
 import Createproduct from './pages/Products/Createproduct.jsx'
 import Manageproduct from './pages/Manageproduct/Manageproduct.jsx'
 import Updateproduct from './pages/upgradeproduct/upgradeproduct.jsx'
+import Dashboard from './pages/dashboard/dashboard.jsx';
+import Address from './pages/address/address.jsx'
+import Updatecart from './pages/Updatecart/updatecart.jsx'
+import Manageorder from './pages/Manageorder/manageorder.jsx'
+import Ordermanage from './pages/order_management/ordermanage.jsx';
 
 import './index.css'
 
@@ -47,6 +52,26 @@ const router = createBrowserRouter([
   {
     path:'/updateproduct/:product_id',
     element: <Updateproduct/>
+  },
+  {
+    path:'/dashboard',
+    element:<Dashboard/>
+  },
+  {
+    path:'/address',
+    element:<Address/>
+  },
+  {
+    path:'/updatecart/:order_items_id',
+    element:<Updatecart/>
+  },
+  {
+    path:'/manageorder',
+    element:<Manageorder/>
+  },
+  {
+    path:'/account',
+    element:<Ordermanage/>
   }
 ])
 

@@ -3,15 +3,15 @@ const multer = require('multer')
 
 const getProducts = async (req, res) => {
   const product_id = req.params.product_id
-  db.query('SELECT * FROM product WHERE product_id = ?', product_id, async (err, data) => {
+  db.query('SELECT p.* , c.* FROM product p INNER JOIN category c ON p.category_id = c.category_id WHERE product_id = ?', product_id, async (err, data) => {
     if (err) return res.status(500).json(err)
-    console.log(`Received request for productId: ${product_id}`);
+    // console.log(`Received request for productId: ${product_id}`);
     return res.status(200).json(data)
   })
 }
 
 const getallProducts = async (req, res) => {
-  db.query('SELECT * FROM product', async (err, data) => {
+  db.query('SELECT p.* , c.* FROM product p INNER JOIN category c ON p.category_id = c.category_id GROUP BY p.product_id', async (err, data) => {
     if (err) return res.status(500).json(err)
     return res.status(200).json(data)
   })
@@ -24,9 +24,10 @@ const createProducts = async (req, res) => {
     req.file.filename,
     req.body.product_name, 
     req.body.product_price,
-    req.body.product_detail
+    req.body.product_detail,
+    req.body.category_id
   ]
-
+  
   // console.log(req.body.product_img)
   db.query('INSERT INTO product VALUE(?)', [newproduct], async (err, data) => {
     if (err) return console.log(err)
@@ -94,6 +95,14 @@ const updateProduct = async (req, res) => {
   })
 }
 
+const getCategory = async (req, res) => {
+  
+  db.query('SELECT * FROM category',async (err,data) => {
+    if (err) return res.status(500).json(err)
+    return res.status(200).json(data)
+  })
+}
+
 
 const deleteProduct = async (req, res) => {
   const product_id = req.params.product_id
@@ -104,11 +113,11 @@ const deleteProduct = async (req, res) => {
     return res.status(200).json()
   })
 
-  db.query('DELETE FROM `size` WHERE product_id = ?', product_id, async (err, data) => {
-    if (err) return res.status(500).json(err)
-    console.log(`Removed : ${product_id}`);
-    return res.status(200).json()
-  })
+  // db.query('DELETE FROM `size` WHERE product_id = ?', product_id, async (err, data) => {
+  //   if (err) return res.status(500).json(err)
+  //   console.log(`Removed : ${product_id}`);
+  //   return res.status(200).json()
+  // })
 }
 
-module.exports = { getProducts, createProducts, getallProducts, addproductsize, deleteProduct, addcategory, updateProduct }
+module.exports = { getProducts, createProducts, getallProducts, addproductsize, deleteProduct, addcategory, updateProduct, getCategory }

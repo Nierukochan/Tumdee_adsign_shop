@@ -57,7 +57,7 @@ function Manageproduct() {
 
                   <div className="mproduct_content-2">
                     <div className="detail-box">
-                        <h3>{item.product_name}</h3>
+                        <h3>{item.product_name}<span>({item.category_name})</span></h3>
                         <hr />
                         <p>รายละเอียด :{item.product_detail}</p>
                     </div>

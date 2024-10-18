@@ -28,6 +28,17 @@ function Cart() {
     console.log('item has been fetch')
   }, [])
 
+  const handleClickforOrder = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post(`http://localhost:2000/api/cart/createOrder`,{},{withCredentials:true})
+      alert('สร้างคำสั่งซื้อสำเร็จ')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -53,11 +64,12 @@ function Cart() {
                             <h2>Product: {item.product_name}</h2>
                             <p>price:  {item.product_price}</p>
                             <p>quantity: {item.qty}</p>
-                            <p>detail: {item.product_detail}</p>
+                            <p>detail: {item.detail}</p>
+                            <p>size: {item.size} </p>
                             <p>subtotal:</p>
-                            <div className="item-actions">
-                              <button className="btn-remove">Remove</button>
-                              <button className="btn-remove" onClick={ e => handleRemove(item.order_items_id)}>Edit</button>
+                            <div className="items-actions">
+                              <button className="btn-remove" onClick={ e => handleRemove(item.order_items_id)}>Remove</button>
+                              <Link to={`/updatecart/${item.order_items_id}`}>update</Link>
                             </div>
                           </div>
 
@@ -74,7 +86,7 @@ function Cart() {
         <div className="order-bar">
           <p>total:</p>
           <hr />
-          <button className="btn-edit">Order</button>
+          <button className="btn-edit" onClick={handleClickforOrder}>Order</button>
         </div>
       </div>
     </>
