@@ -73,7 +73,7 @@ function uploadreciept({ isOpen, onClose, orderId  }) {
 
                         <div className="input-reciept">
                           <label htmlFor="">ยอดชำระ</label>
-                          <input type="text" />
+                          <input type="number" />
                         </div>
 
                       </div>

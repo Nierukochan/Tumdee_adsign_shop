@@ -38,6 +38,7 @@ const verifyEmpToken = async (req, res, next) => {
         req.emp = emp;
         next()
       })
+      
   } catch (err) {
     console.log(err)
     res.send('sEvVer ErrOR').status(500)

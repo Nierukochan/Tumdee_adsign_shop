@@ -24,5 +24,6 @@ router.put('/updateorderstatus',verifyEmpToken,updateorderstatus)
 router.get('/getorderworking',verifyEmpToken,getorderworking)
 router.get('/getdoneorder',verifyEmpToken,getdoneorder)
 router.get('/getdoneordercus',verifyToken,getdoneordercus)
+// router.get('/getposition',getposition)
 
 module.exports = router

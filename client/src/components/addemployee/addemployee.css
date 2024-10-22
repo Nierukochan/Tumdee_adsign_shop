@@ -1,0 +1,141 @@
+.addemp-head {
+  width:100%;
+  height:20%;
+  /* background:red; */
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+}
+
+.addemp-label {
+  display:flex;
+  justify-content:center;
+  padding:30px;
+  /* background:yellow; */
+  width:10%;
+}
+
+.addemp-button {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:10px;
+  width:20%;
+  /* background:yellow; */
+}
+
+.addemp-button button {
+  width:70%;
+  height:50px;
+  border:3px solid #A0D683;
+  border-radius:10px;
+  background:transparent;
+  color:#A0D683;
+  font-size:16px;
+  font-weight:500;
+  transition: all 0.6s ease;
+}
+
+.addemp-button button:hover {
+  color:#fff;
+  border:3px solid #fff;
+  background:#A0D683;
+  transition: all 0.6s ease;
+  border-radius:15px;
+}
+
+.addemp-container {
+  display:flex;
+  align-items:center;
+  flex-direction:column;
+  padding:0 20px;
+  width:100%;
+  min-height:80%;
+  height:auto;
+  /* background:blue; */
+  gap:20px;
+}
+
+.emp-box {
+  padding:10px;
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  width:80%;
+  height:120px;
+  background:yellow;
+  background: #fff;
+  transition: all 0.6s ease;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius:25px;
+}
+
+.emp-box:hover {
+  transform: scale(1.01);
+}
+
+.emp-box-detail {
+  display:flex;
+  flex-direction:column;
+}
+
+.emp-box-detail p {
+  margin-bottom: 10px;
+}
+
+.emp-box-detail span {
+  margin-left:10px;
+  font-weight:300;
+  font-size:14px;
+  color:#888;
+}
+
+.emp-box-action {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-around;
+  align-items:center;
+  width:30%;
+  height:100%;
+  /* background:red; */
+}
+
+.emp-box-action button {
+  width:100px;
+  height:40px;
+  border-radius:10px;
+  border:none;
+  transition: all 0.6s ease;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.emp-box-action button:hover {
+  transition: all 0.6s ease;
+  border-radius:15px;
+}
+
+.emp-right button{
+  color: #fff;
+  background:red;
+}
+
+.emp-right button:hover{
+  color:red;
+  border:3px solid red;
+  background:transparent;
+}
+
+.emp-left button{
+  color: #fff;
+  background:#005EFF;
+}
+
+.emp-left button:hover{
+  color:#005EFF;
+  border:3px solid #005EFF;
+  background:transparent;
+}
+
+
+
+

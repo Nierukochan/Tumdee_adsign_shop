@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import './ordermanage.css'
 import Navbar from '../../components/Navbar/navbar'
 import Customersidebar from '../../components/customer_sidebar/customersidebar'
+import Orderhistory from '../../components/order_history/order_history'
 
 function orderhistory() {
   return (
@@ -17,7 +17,7 @@ function orderhistory() {
 
       <div className="content-container">
         <Customersidebar/>
-       
+        <Orderhistory/>
       </div>
     </>
   )

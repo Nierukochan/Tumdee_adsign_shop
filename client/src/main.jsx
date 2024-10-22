@@ -20,6 +20,7 @@ import Ordermanage from './pages/order_management/ordermanage.jsx';
 import Addemployee from './pages/addemployee/addemployee.jsx'
 import Workingorder from './pages/workingorder/workingorder.jsx'
 import Doneorder from './pages/doneorder/doneorder.jsx'
+import Orderhistory from './pages/order_history/orderhistory.jsx'
 
 import './index.css'
 
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
   {
     path:'/Doneorder',
     element:<Doneorder/>
+  },
+  {
+    path:'/Orderhistory',
+    element:<Orderhistory/>
   }
 ])
 

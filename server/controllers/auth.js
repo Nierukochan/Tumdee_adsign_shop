@@ -40,8 +40,17 @@ const register = async (req, res) => {
 
 const empregister = async (req, res) => {
 
-  const emp_id = req.body.emp_id
-  const password = await req.body.password;
+  const emp_id = req.body.emp_id;
+    const password = req.body.password;
+    const emp_name = req.body.emp_name;
+    const emp_tel = req.body.emp_tel;
+    const position_id = req.body.position_id;
+
+    // Check if any of the required fields are missing
+    // if (!emp_id || !password || !emp_name || !emp_tel || !position_id) {
+    //   return res.status(400).json({ message: "All fields are required" });
+    // }
+
   //Check user if exists
   db.query("SELECT * FROM personal WHERE emp_id = ?", emp_id, async (err, data) => {
     if (err) {
@@ -53,19 +62,18 @@ const empregister = async (req, res) => {
 
     //Create a new user and encode
     const hashedpassword = await bcrypt.hash(password, 10);
-    const emp_name = await req.body.name + " " + req.body.lastname;
-    const cusid = uuidv4();
+    // const cusid = uuidv4();
 
-    const empdata = await [
-      emp_id,
-      emp_name,
-      hashedpassword,
-      req.body.tel,
-      req.body.position,
+    const empdata = [
+        emp_id,
+        emp_name,
+        hashedpassword,
+        emp_tel,
+        position_id
     ]
 
     db.query("INSERT INTO personal VALUE (?)", [empdata], async (err) => {
-      if (err) return res.status(500).json('server error');
+      if (err) return res.status(500).json(err);
       return res.status(200).json("Profile has been created.");
     })
   })
@@ -78,7 +86,7 @@ const emplogin = async (req, res) => {
       return res.status(500).json({ error: 'Database query error', details: err });
     }
     if (data.length === 0) {
-      return res.status(404).json({ message: "ID not found" }); // Changed to 404 for better semantics
+      return res.status(404).json({ message: "ID not found" }); 
     }
 
     const checkPassword = bcrypt.compareSync(req.body.password, data[0].password);
@@ -89,7 +97,7 @@ const emplogin = async (req, res) => {
     }
 
     // Set token
-    const token = jwt.sign({ emp_id: data[0].emp_id }, process.env.JWT_SECRET || "secretkey"); // Use env variable for secret
+    const token = jwt.sign({ emp_id: data[0].emp_id }, "secretkey"); 
 
     const { password, ...others } = data[0];
 
@@ -147,4 +155,42 @@ const getuser = async (req, res) => {
     })
 }
 
-module.exports = { login, register, logout, getuser, emplogin,empregister };
+  const getemp = async (req, res) => {
+     
+    const emp_id = req.emp.emp_id
+    // console.log(emp_id)
+
+    if (!emp_id) {
+      return res.status(401).json('Emp ID not found');//its worked
+    }
+
+    /*if (position !== '1') {
+      return res.status(401).json('No permision');//its worked
+    }*/
+
+      db.query('SELECT * FROM personal WHERE emp_id =?',[emp_id],(err, data) => {
+        if(err) return res.status(500).json(err)
+        if(data[0].position_id !== '1') return res.status(401).json('No permision')
+          db.query('SELECT * FROM personal', (err, row) => {
+            if(err) return res.status(500).json(err)
+
+            /*const { password, ...others } = row*/
+            const result = row.map(({ password, ...otherFields }) => otherFields)
+
+            return res.status(200).json(result)
+          })
+      })
+}
+
+ const getposition = async (req, res) => {
+    
+    const qry = `SELECT * FROM position_table`
+
+    db.query(qry,(err, data) => {
+      if(err) return res.status(500).json(err)
+      return res.status(200).json(data)
+    })
+ }
+
+
+module.exports = { login, register, logout, getuser, emplogin, empregister, getemp, getposition}

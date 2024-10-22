@@ -1,0 +1,19 @@
+.overlay-add-container {
+  display:flex;
+  flex-direction:column;
+  background:red;
+  width:100%;
+}
+
+.input-emp {
+  display:flex;
+  flex-direction:row;
+  gap:10px;
+  width:100%;
+  padding:10px 10px 10px 100px;
+  /* background:red; */
+}
+
+.input-emp label {
+  width:100px;
+}
