@@ -5,6 +5,7 @@ const verifyToken = async (req, res, next) => {
   try {
     //req
     const tokenkun = req.cookies.token;
+    // console.log(tokenkun)
     if (!tokenkun) {
       return res.status(401).send('You re not Autenticated')
     }
@@ -22,6 +23,27 @@ const verifyToken = async (req, res, next) => {
   }
 }
 
+const verifyEmpToken = async (req, res, next) => {
+  try {
+
+    const emptoken = req.cookies.emptoken;
+    // console.log(emptoken)
+    if (!emptoken) {
+      return res.status(401).send('You re not Autenticated')
+    }
+    
+    const splitedtoken = emptoken.split(" ")[1] || emptoken;
+      jwt.verify(splitedtoken, "secretkey", (err, emp) => {
+        if (err) res.status(403).json("Token is not valid!");
+        req.emp = emp;
+        next()
+      })
+  } catch (err) {
+    console.log(err)
+    res.send('sEvVer ErrOR').status(500)
+  }
+}
+
 //authorize
 const verifyandAuthorize = async (req, res, next) => {
   verifyToken(req, res, () => {
@@ -33,4 +55,4 @@ const verifyandAuthorize = async (req, res, next) => {
   });
 }
 
-module.exports = { verifyToken, verifyandAuthorize }
+module.exports = { verifyToken, verifyandAuthorize, verifyEmpToken }

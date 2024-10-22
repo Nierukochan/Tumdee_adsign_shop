@@ -2,21 +2,30 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './ordermanage.css'
+import Uploadreciept from '../uploadOverlay/uploadreciept.jsx'
 
 function ordermanage() {
 
   const [orders, setOrders] = useState([])
-  const totalSum = orders.reduce((total, item) => total + item.total_price, 0);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState();
 
   useEffect(() => {
     const fetchOrders = async () => {
       const response = await axios.get(`http://localhost:2000/api/order/getprocessingOrders`, { withCredentials: true });
       setOrders(response.data);
       console.log(response.data);
-    };
+    }
+
     fetchOrders();
     console.log('order has been fetched');
-  }, []);
+  }, [])
+
+  const handleUploadClick = (orderId) => {
+    setSelectedOrderId(orderId)
+    setIsOverlayOpen(true)
+  }
+  
 
   return (
     <>
@@ -39,25 +48,34 @@ function ordermanage() {
               <div className="order-manage-orderdetail">
                 <div className="order-manage-detail-top">
                   <p>หมายเลขคำสั่งซื้อ  {item.order_id}  |</p>
-                  <p>  {item.status_item}</p>
+                  <p>  {item.order_status_name}</p>
                 </div>
                 <div className="order-manage-detail-bot">
                   <h4>{item.product_name}</h4>
                   <p>จำนวน: X{item.qty}</p>
+                  <p>รายละเอียด: {item.detail}</p>
+                  <p>หมายเลขชิ้นงาน: {item.order_items_id}</p>
+                  <p>ที่อยู่ในการจัดส่ง: {item.address} อำเภอ{item.city} จังหวัด{item.province} รหัสไปรษณีย์{item.postnum}</p>
                 </div>
               </div>
               <div className="order-manage-action">
                   <div className="order-manage-action-top">
-
+                    <p>หลักฐานการชำระเงิน</p>
+                    {(!item.reciept_image || item.reciept_image === "null")  ? (
+                      <button onClick={() => handleUploadClick(item.order_id,item)}>upload</button>
+                    ) : (
+                      <img src={`http://localhost:2000/images/` + item.reciept_image} alt="Receipt" />
+                    )}
+                    {/* <button onClick={() => setIsOverlayOpen(!isOverlayOpen)}>upload</button> */}
                   </div>
                   <div className="order-manage-action-bot">
-                    <h3>รวมการสั่งซื้อ {totalSum}</h3>
+                    <h3>รวมการสั่งซื้อ {item.sum}</h3>
                   </div>
               </div>
             </div>
           ))}
         </>):(<><h2>ไม่พบคำสั่งซื้อ</h2></>)}
-      
+        <Uploadreciept isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)} orderId={selectedOrderId}/>
       </div>
     </div>
     </>

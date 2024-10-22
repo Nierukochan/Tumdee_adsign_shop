@@ -38,6 +38,66 @@ const register = async (req, res) => {
   })
 }
 
+const empregister = async (req, res) => {
+
+  const emp_id = req.body.emp_id
+  const password = await req.body.password;
+  //Check user if exists
+  db.query("SELECT * FROM personal WHERE emp_id = ?", emp_id, async (err, data) => {
+    if (err) {
+      return res.status(500).json(err)
+    }
+    if (data.length) {
+      return res.status(400).json("THis user already exist")
+    }
+
+    //Create a new user and encode
+    const hashedpassword = await bcrypt.hash(password, 10);
+    const emp_name = await req.body.name + " " + req.body.lastname;
+    const cusid = uuidv4();
+
+    const empdata = await [
+      emp_id,
+      emp_name,
+      hashedpassword,
+      req.body.tel,
+      req.body.position,
+    ]
+
+    db.query("INSERT INTO personal VALUE (?)", [empdata], async (err) => {
+      if (err) return res.status(500).json('server error');
+      return res.status(200).json("Profile has been created.");
+    })
+  })
+
+}
+
+const emplogin = async (req, res) => {
+  db.query('SELECT * FROM personal WHERE emp_id = ?', [req.body.emp_id], async (err, data) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database query error', details: err });
+    }
+    if (data.length === 0) {
+      return res.status(404).json({ message: "ID not found" }); // Changed to 404 for better semantics
+    }
+
+    const checkPassword = bcrypt.compareSync(req.body.password, data[0].password);
+    console.log(checkPassword);
+
+    if (!checkPassword) {
+      return res.status(400).json({ message: "Wrong password or ID!" });
+    }
+
+    // Set token
+    const token = jwt.sign({ emp_id: data[0].emp_id }, process.env.JWT_SECRET || "secretkey"); // Use env variable for secret
+
+    const { password, ...others } = data[0];
+
+    res.cookie("emptoken", token, { httpOnly: true }).status(200).json(others);
+  });
+};
+
+
 const login = async (req, res) => {
   // res.send("login")
   // const {email,password} = await req.body
@@ -87,4 +147,4 @@ const getuser = async (req, res) => {
     })
 }
 
-module.exports = { login, register, logout, getuser };
+module.exports = { login, register, logout, getuser, emplogin,empregister };

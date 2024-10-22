@@ -1,0 +1,167 @@
+.update-container {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background-color: white;
+  border-radius:25px;
+  margin: 100px;
+  z-index: 10;
+  padding:5px 0 20px 0;
+  width: 700px;
+  height:max-content;
+  min-height: 600px;
+}
+
+.overlay-header p {
+  font-size:14px;
+}
+
+.update-content {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:100%;
+  height:max-content;
+  padding:5px 0;
+  gap:15px;
+  /* background:red; */
+}
+
+.order-update-address {
+  display:flex;
+  flex-direction:row;
+  width:90%;
+  height:150px;
+  background: #fff;
+  transition: all 0.6s ease;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius:25px;
+  padding:10px;
+  gap:5px;
+}
+
+.order-update-address:hover {
+  transform: scale(1.02);
+}
+
+.update-cus-name {
+  display:flex;
+  flex-direction:column;
+  /* align-items:center; */
+  width:25%;
+  /* background:red; */
+}
+
+.update-cus-address {
+  font-size:14px;
+  font-weight:300;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  width:75%;
+  /* background:red; */
+}
+
+.address-title {
+  margin-bottom:5px;
+}
+
+.order-update-content {
+  display:flex;
+  flex-direction:column;
+  width:90%;
+  height:300px;
+  background:#fff;
+  transition: all 0.6s ease;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius:25px;
+}
+
+.order-update-content:hover {
+  transform: scale(1.02);
+}
+
+.order-update-detail {
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  height:50%;
+  /* background:red; */
+}
+
+.order-update-payment {
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  height:50%;
+  /* background:red; */
+}
+
+.order-update-img  {
+  display: flex;
+  flex-direction: column;
+  /* background: #00F090; */
+  width:30%;
+  /* max-width:220px; */
+  padding:10px 5px;
+  height:100%;
+  adding: 15px;
+  font-size:12px;
+}
+  
+.order-update-img img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.update-detail {
+  display:flex;
+  flex-direction:column;
+  width:70%;
+  padding:5px;
+}
+
+.update-detail p {
+  font-size:14px;
+  font-weight:400;
+}
+
+.order-update-action {
+  display:flex;
+  justify-content:space-around;
+  width:90%;
+  height:40px;
+  /* background:red; */
+}
+
+.order-update-action button {
+  font-family: "Prompt", sans-serif;
+  padding:5px;
+  font-weight: 500;
+  font-size:18px;
+  width:30%;
+  padding: 5px;
+  border: none;
+  background:#A0D683;
+  color:#fff;
+  transition: all 0.6s ease;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius:5px;
+}
+
+.order-update-action button:hover {
+  border-radius:15px;
+  background:#B3E89C;
+  transition:.3s;
+  transform: scale(1.01);
+}
+
+.order-update-action a {
+  width:100%;
+}
+
+
+
+
+

@@ -2,7 +2,9 @@ import React, { useContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthContextProvider } from './context/authcontext.jsx'
+import { EmpContextProvider } from './context/empcontext.jsx'
 import Login from './pages/login/login';
+import Adminlogin from './pages/admin_login/adminlogin.jsx';
 import Register from './pages/register/register';
 import Homepage from './pages/register/homepage';
 import Cart from './pages/cart/cart.jsx'
@@ -15,6 +17,9 @@ import Address from './pages/address/address.jsx'
 import Updatecart from './pages/Updatecart/updatecart.jsx'
 import Manageorder from './pages/Manageorder/manageorder.jsx'
 import Ordermanage from './pages/order_management/ordermanage.jsx';
+import Addemployee from './pages/addemployee/addemployee.jsx'
+import Workingorder from './pages/workingorder/workingorder.jsx'
+import Doneorder from './pages/doneorder/doneorder.jsx'
 
 import './index.css'
 
@@ -72,13 +77,31 @@ const router = createBrowserRouter([
   {
     path:'/account',
     element:<Ordermanage/>
+  },
+  {
+    path:'/emplogin',
+    element:<Adminlogin/>
+  },
+  {
+    path:'/addemployee',
+    element:<Addemployee/>
+  },
+  {
+    path:'/Workingorder',
+    element:<Workingorder/>
+  },
+  {
+    path:'/Doneorder',
+    element:<Doneorder/>
   }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthContextProvider>
-      <RouterProvider router={router} />
+      <EmpContextProvider>
+        <RouterProvider router={router} />
+      </EmpContextProvider>
     </AuthContextProvider>
   </React.StrictMode>,
 )

@@ -60,12 +60,13 @@ function Address({ current_address }) {
 
     alert('this is address_id'+ address_id)
 
-    // try {
-    //   await axios.post('http://localhost:2000/api/cart/createOrder', { address_id }, { withCredentials: true });
-    //   console.log('Its work');
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      await axios.post('http://localhost:2000/api/cart/createOrder', { address_id }, { withCredentials: true });
+      console.log('Its work');
+      alert('สร้างคำสั่งซื้อสำเร็จ')
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

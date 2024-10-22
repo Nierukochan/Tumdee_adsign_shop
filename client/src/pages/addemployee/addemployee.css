@@ -1,0 +1,11 @@
+.addemp-head {
+  width:100%;
+  height:20%;
+  background:red;
+}
+
+.addemp-container {
+  width:100%;
+  min-height:80%;
+  background:blue;
+}

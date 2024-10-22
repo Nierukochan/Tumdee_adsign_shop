@@ -15,7 +15,7 @@ const addtocart = async (req,res) => {
     }
 
   const order_items_id = uuidv4();
-  const status_item = 'In cart'
+  const status_item = '1'
   
   //The problem is Unauthenticated cuz,we can't get cus_id how can i solve it
   //Now its worked but it still can't get cus_id error 401 not found user id
@@ -40,7 +40,7 @@ const addtocart = async (req,res) => {
 }
 
 const getcart = async (req,res) => {
-  const status_item = 'In cart'
+  const status_item = '1'
   const userID = await req.user.cus_id; // or wherever the user ID is stored
     if (!userID) {
       return res.status(404).json('User ID not found');//its worked
@@ -56,13 +56,17 @@ const getcart = async (req,res) => {
 
 const getallorder = async (req, res) => {
 
-  const status_item = 'In progress'
-  const qry = `SELECT o.*, oi.*, p.* , c.* , cus.*
+  const status_item = '2'
+  const qry = ` SELECT a.*, o.*, oi.*, p.* , c.* , oi_s.*, order_s.* ,cus.cus_id ,pa.*, SUM(o.total_price) As sum
                 FROM order_table o 
+                INNER JOIN address a ON o.address_id = a.address_id
                 INNER JOIN order_items oi ON o.order_items_id = oi.order_items_id 
                 INNER JOIN product p ON oi.product_id = p.product_id 
                 INNER JOIN category c ON p.category_id = c.category_id
                 INNER JOIN customer cus ON oi.cus_id = cus.cus_id
+                INNER JOIN order_items_status oi_s ON oi.status_item = oi_s.status_item 
+                INNER JOIN order_status order_s ON o.status_id = order_s.status_id 
+                INNER JOIN payment pa ON o.payment_id = pa.payment_id
                 WHERE oi.status_item = ? 
                 GROUP BY o.order_items_id;`
   
@@ -153,7 +157,8 @@ const deletecart = async (req,res) => {
 const createOrder = async (req, res) => {
 
   const order_id = uuidv4()
-  const status_item = 'In cart'
+  const payment_id = uuidv4()
+  const status_item = '1'
   const address_id = req.body.address_id
   
   const userID = await req.user.cus_id; // or wherever the user ID is stored
@@ -168,6 +173,12 @@ const createOrder = async (req, res) => {
       WHERE oi.cus_id = ? 
       AND oi.status_item = ? 
       GROUP BY oi.order_items_id`
+
+  const payment = [
+      payment_id,
+      userID,
+      order_id 
+    ]
 
   db.query(querychan,[userID, status_item], async (err, data) => {
     if(err) return res.status(500).json(err)
@@ -184,23 +195,27 @@ const createOrder = async (req, res) => {
           order_items.cus_id,
           address_id,
           emp_id,
-          status_id
+          status_id,
+          payment_id
         ];
 
         const order_items_id = order_items.order_items_id
-        const status_item_2 = 'In progress'
+        const status_item_2 = '2'
       
         // Insert into order_table
-        db.query('INSERT INTO order_table (order_id, order_items_id, total_price, cus_id, address_id, emp_id, status_id) VALUES (?)', [new_order], (err) => {
+        db.query('INSERT INTO order_table (order_id, order_items_id, total_price, cus_id, address_id, emp_id, status_id, payment_id) VALUES (?)', [new_order], (err) => {
           if (err) return res.status(500).json(err);
 
-          db.query("UPDATE `order_items` SET `status_item`=? WHERE order_items_id = ? and status_item = 'In cart' ",
-            [status_item_2,order_items_id],(err) => {
+          db.query("UPDATE `order_items` SET `status_item`=? WHERE order_items_id = ? ",
+            [status_item_2, order_items_id],(err) => {
               if (err) return res.status(500).json(err);
           })
         })
       })
 
+      db.query(`INSERT INTO payment (payment_id, cus_id, order_id) VALUES (?)`,[payment],(err,data)=>{
+        if(err) return res.status(500).json(err)
+      })
       return res.status(200).send('Order has been created')
   })
 }
@@ -213,7 +228,7 @@ const testdashboard = async (req, res) => {
   ` SELECT oi.* , p.* , SUM(oi.qty * p.product_price) AS sales ,COUNT(oi.product_id) AS product_count 
     FROM order_items oi 
     INNER JOIN product p ON oi.product_id = p.product_id
-    WHERE oi.status_item = 'Done'
+    WHERE oi.status_item = '4'
     GROUP BY oi.product_id`
 
     db.query(sqlquery,(err,data) => {
