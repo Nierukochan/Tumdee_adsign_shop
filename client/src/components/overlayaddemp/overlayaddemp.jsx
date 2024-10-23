@@ -6,7 +6,7 @@ import axios from 'axios'
 function overlayaddemp({isOpen, onClose, children}) {
 
   const [position, setPosition] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('1');
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -47,11 +47,12 @@ function overlayaddemp({isOpen, onClose, children}) {
     formData.append('emp_tel', inputs.emp_tel);
     formData.append('position_id',selectedCategory)
 
-    console.log( inputs.emp_id)
+    {/*console.log( inputs.emp_id)
     console.log(inputs.emp_name)
     console.log( inputs.password)
     console.log(inputs.emp_tel)
-    console.log(selectedCategory)
+    console.log(selectedCategory)*/}
+  //  alert(selectedCategory)
 
     const employeeData = {
       emp_id: inputs.emp_id,
@@ -105,8 +106,7 @@ function overlayaddemp({isOpen, onClose, children}) {
                         </div>
 
                         <div className="input-emp">
-                            <label htmlFor="">เบอร์ติดต่อ</label>
-                            <div className="list-box">
+                            <label htmlFor="">เบอร์ติดต่อ</label>                            
                                 <select name="position_id" onClick={handleChangeforCategory} >
                                     {position.length > 0 ? (
                                       <>
@@ -116,10 +116,11 @@ function overlayaddemp({isOpen, onClose, children}) {
                                           <p></p>
                                     )}
                                 </select>
-                            </div>
                         </div>
 
-                        <button onClick={handleClick} type="submit">Create Product</button>
+                        <div className="input-emp">
+                            <button onClick={handleClick} type="submit">เพิ่มพนักงาน</button>
+                        </div>
 
                     </div>
                 </div>

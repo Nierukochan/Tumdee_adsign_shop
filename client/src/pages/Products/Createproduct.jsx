@@ -11,18 +11,22 @@ function Createproduct() {
   const [category, Setcategory] = useState([]) /* fetch category */
   const [selectedCategory, setSelectedCategory] = useState('');
   const [file, setFile] = useState()
+  const [product, setProduct] = useState('')
+  const [products, setProducts] =useState([]) /* fetch */
+
   const [size, setSize] = useState({
-    size_value:"",
-    price:"",
-    product_id:""
+    size_value: "",
+    price: 0,
+    product_id: ""
   })
+
   const [inputs, setInputs] = useState({
     product_id: "",
-    product_img:"",
-    product_name:"",
-    product_price:"",
-    product_detail:"",
-    category_id:""
+    product_img: "",
+    product_name: "",
+    product_price: "",
+    product_detail: "",
+    category_id: ""
   })
 
   useEffect(() => {
@@ -35,14 +39,34 @@ function Createproduct() {
     console.log('item has been fetch')
   }, [])
 
+  useEffect(() => {
+    const fetchItems = async () => {
+      const response = await axios.get('http://localhost:2000/api/product/getallProducts', { withCredentials: true })
+      setProducts(response.data)
+      setProduct(response.data[0]?.product_id )
+      console.log(response.data)
+    }
+    fetchItems()
+    console.log('item has been fetch')
+  }, [])
+
   const handleChangeforCategory = (e) => {
     const selectedValue = e.target.value
-    setSelectedCategory(selectedValue)       
+    setSelectedCategory(selectedValue)
   }
 
+  const handleChangeforSize = (e) => {
+    const selectedValue = e.target.value
+    setProduct(selectedValue)
+  }
 
   const handleChange = (e) => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    console.log(e.target.files)
+  }
+
+  const handleChangesize = (e) => {
+    setSize((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     console.log(e.target.files)
   }
 
@@ -58,18 +82,40 @@ function Createproduct() {
     e.preventDefault()
 
     try {
-      await axios.post('http://localhost:2000/api/product/createCategory',category_name, {withCredentials: true})
-      console.log('Category has been created',category_name)
+      await axios.post('http://localhost:2000/api/product/createCategory', category_name, { withCredentials: true })
+      console.log('Category has been created', category_name)
       // alert("Hello! I am an alert box!!");
-       window.location.reload()
+      window.location.reload()
     } catch (error) {
-      
+
+    }
+  }
+
+  const handleSizeClick = async (e) => {
+    e.preventDefault()
+
+    const sizedata = {
+      size_value: size.size_value,
+      price: size.price,
+      product_id: product,
+    }
+
+    console.log('size_value:', employeeData);
+
+
+    try {
+      await axios.post('http://localhost:2000/api/product/addproductsize', sizedata, { withCredentials: true })
+      console.log('Category has been created', size.size_value)
+      // alert("Hello! I am an alert box!!");
+      window.location.reload()
+    } catch (error) {
+      console.error('Error uploading receipt:', error.response ? error.response.data : error.message)
     }
   }
 
   const clicktest = async (e) => {
     e.preventDefault()
-    alert(file)
+    console.log(product)
   }
 
   const handleClick = async (e) => {
@@ -81,7 +127,7 @@ function Createproduct() {
     formData.append('product_price', inputs.product_price);
     formData.append('product_detail', inputs.product_detail);
     formData.append('file', file);
-    formData.append('category_id',selectedCategory)
+    formData.append('category_id', selectedCategory)
     try {
       await axios.post('http://localhost:2000/api/product/createProducts', formData, { withCredentials: true })
       console.log('Product has been created', inputs)
@@ -101,9 +147,9 @@ function Createproduct() {
       </div>
 
       <div className="content-container">
-        
-        <Sidebar/>
-        
+
+        <Sidebar />
+
         <div className="create">
           <div className="content-create">
             <h3>Create product</h3>
@@ -138,12 +184,12 @@ function Createproduct() {
               <label htmlFor="category">Category</label>
               <div className="list-box">
                 <select name="category" onChange={handleChangeforCategory}>
-                {category.length > 0 ? (
-                  <>
-                    {category.map(item => ( 
-                      <option value={item.category_id}>{item.category_name}</option>
-                    ))} </>):(
-                      <p></p>
+                  {category.length > 0 ? (
+                    <>
+                      {category.map(item => (
+                        <option value={item.category_id}>{item.category_name}</option>
+                      ))} </>) : (
+                    <p></p>
                   )}
                 </select>
               </div>
@@ -151,7 +197,7 @@ function Createproduct() {
 
             <div className="create-action">
               <button onClick={handleClick} type="submit">Create Product</button>
-              {/* <button onClick={clicktest} type="submit">Create Product</button> */}
+              {/* <button onClick={clicktest} type="submit">Test Product</button> */}
             </div>
 
             <hr />
@@ -159,21 +205,30 @@ function Createproduct() {
             <p>Provide the necessary details to register your business with us</p>
             <div className="input-create-2">
               <label htmlFor="product_size">Size</label>
-              
-                <div className='size-input'>
-                  <input  type="text" name="size_value" placeholder="Size Value" required></input>
-                  <input  type="number" name="price" placeholder="Size Price" required></input>
-                </div>
+
+              <div className='size-input'>
+                <select name="product-u" onChange={handleChangeforSize}>
+                  {products.length > 0 ? (
+                    <>
+                      {products.map(item => (
+                        <option value={item.product_id}>{item.product_name}</option>
+                      ))} </>) : (
+                    <p></p>
+                  )}
+                </select>
+                <input type="text" name="size_value" placeholder="Size Value" onChange={handleChangesize} required></input>
+                <input type="number" name="price" placeholder="Size Price" onChange={handleChangesize} required></input>
+              </div>
             </div>
 
             <div className="create-action">
-              <button type="button">Create Product</button>
+              <button type="button" onClick={handleSizeClick}>add size</button>
             </div>
 
             <hr />
             <h3>New Category</h3>
             <p>Provide the necessary details to register your business with us</p>
-            
+
             <div className="input-create">
               <label htmlFor="category_name">Category name</label>
               <input onChange={handleCategoryChange} type="text" name="category_name" required></input>

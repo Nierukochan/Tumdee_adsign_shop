@@ -1,7 +1,7 @@
 .overlay-add-container {
   display:flex;
   flex-direction:column;
-  background:red;
+  /* background:red; */
   width:100%;
 }
 
@@ -16,4 +16,22 @@
 
 .input-emp label {
   width:100px;
+}
+
+.input-emp input {
+  padding:0 5px;
+  border:0.3px solid #ffe1;
+  border-radius:5px;
+  height:30px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.input-emp select {
+  text-align:center;
+  width:200px;
+  padding:0 5px;
+  border:0.3px solid #ffe1;
+  border-radius:5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  height:30px;
 }

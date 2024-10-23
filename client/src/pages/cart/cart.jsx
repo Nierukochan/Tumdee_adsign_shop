@@ -3,10 +3,14 @@ import axios from "axios"
 import { Link, useNavigate } from "react-router-dom"
 import './cart.css'
 import Navbar from "../../components/Navbar/navbar"
+import { BsTrash3Fill } from "react-icons/bs"
 
 function Cart() {
 
   const [cartItems, SetCartItems] = useState([])
+  const totalSum = cartItems.reduce((total, item) => total + item.sum, 0);
+
+  const navigate = useNavigate()
 
   const handleRemove = async (id) =>{
     try {
@@ -32,8 +36,7 @@ function Cart() {
     e.preventDefault();
 
     try {
-      await axios.post(`http://localhost:2000/api/cart/createOrder`,{},{withCredentials:true})
-      alert('สร้างคำสั่งซื้อสำเร็จ')
+      navigate('/address')
     } catch (error) {
       console.error(error)
     }
@@ -42,51 +45,71 @@ function Cart() {
   return (
     <>
       <Navbar />
-      <div className="big-box">
-        <div className="header-container">
-          <h1 className="cart-title">Cart</h1>
-        </div>
+      <div className="header-homepage-container">
+          <div className="header-homepage-content">
+
+          </div>
       </div>
-      <div className="cart-container">
+      <div className="content-container">
+        <div className="cart-container">
+        <div className="cart-header">
+          <h2>ตะกร้า</h2>
+        </div>
+        {cartItems.length > 0 ? (
+            <>
+            {cartItems.map((item)=>(
+                <>
+                    <div className="cart-items-box">
+                        <div className="cart-items-image">
+                            <span>ภาพชิ้นงาน</span>
+                            <img src={`http://localhost:2000/images/` + item.task_img} alt="" />
+                        </div>
 
-        <div className="items-box">
-          {cartItems.length > 0 ? (
-            <Link className="link">
-              {cartItems.map(item => (
-                <ul key={item.Order_items_id}>
-                  <div className="wrapper-cart">
-                    <div className="project">
-                      <div className="shop">
-                        <div className="box">
-                          <img src={`http://localhost:2000/images/`+ item.product_img} alt="" />
-
-                          <div className="content">
-                            <h2>Product: {item.product_name}</h2>
-                            <p>price:  {item.product_price}</p>
-                            <p>quantity: {item.qty}</p>
-                            <p>detail: {item.detail}</p>
-                            <p>size: {item.size} </p>
-                            <p>subtotal:</p>
-                            <div className="items-actions">
-                              <button className="btn-remove" onClick={ e => handleRemove(item.order_items_id)}>Remove</button>
-                              <Link to={`/updatecart/${item.order_items_id}`}>update</Link>
-                            </div>
+                        <div className="cart-items-detail">
+                          <div className="cart-top">
+                              <p>{item.product_name}</p>
+                              <a href={`/updatecart/${item.order_items_id}`}>แก้ไข</a>
                           </div>
 
+                          <div className="cart-bot">
+                              <div className="cart-detail">
+                                  <p>ราคาต่อชิ้น:  {item.product_price} บาท</p>
+                                  <p>จำนวน: {item.qty} ชิ้น</p>
+                                  <p>รายละเอียด: {item.detail}</p>
+                                  <p>ขนาด: {item.size} </p>
+                                  <p>ราคารวม:</p>
+                              </div>
+                              <div className="cart-del">
+                                <BsTrash3Fill className="trash" onClick={ e => handleRemove(item.order_items_id)}/>
+                              </div>
+                          </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                </ul>
-              ))} </Link>) : (
-            <p>Your cart is empty.</p>
-          )}
-        </div>
-
-        <div className="order-bar">
-          <p>total:</p>
-          <hr />
-          <button className="btn-edit" onClick={handleClickforOrder}>Order</button>
+                </>))}
+              </>):null}
+        </div> 
+        <div className="action-container">
+              <div className="action-cart-box">
+                <div className="action-cart-header">
+                    <h3>สรุปรายการ</h3>
+                </div>
+                <div className="action-cart-content">
+                    {cartItems.length > 0 ? (
+                      <>
+                      {cartItems.map((item)=>(
+                        <>
+                          <span>{item.product_name} X{item.qty}</span>
+                        </>
+                      ))}
+                      </>
+                    ):null}
+                </div>
+                <hr />
+                <div className="action-cart-button">
+                    <h3>รวมการสั่งซื้อ {totalSum}</h3>
+                    <button type="submit" onClick={handleClickforOrder}>ดำเนินการต่อ</button>
+                </div>
+              </div>
         </div>
       </div>
     </>

@@ -100,9 +100,6 @@ const addpaymentreciept = async (req,res) => {
     INNER JOIN order_items oi ON oi.order_items_id = o.order_items_id
     WHERE o.order_id = ? `
   const qry2 = 'UPDATE `order_table` SET `status_id` = ?  WHERE order_id = ?'
-   /* db.query('UPDATE `order_table` SET `status_id` = `2`  WHERE order_id = ?',[req.body.order_id],(err,data) => {
-      if(err) return res.status(500).json(err)
-    })*/
 
 
   db.query(qry2,[status_id,req.body.order_id],(err,data) => {

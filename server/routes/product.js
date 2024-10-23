@@ -1,5 +1,5 @@
 const express = require('express')
-const {getProducts, createProducts, getallProducts, deleteProduct, addcategory, updateProduct, getCategory} = require('../controllers/product')
+const {getProducts, createProducts, getallProducts, deleteProduct, addcategory, updateProduct, getCategory, addproductsize} = require('../controllers/product')
 const { verifyToken, verifyEmpToken } = require('../controllers/verifyToken')
 const multer = require('multer')
 
@@ -17,6 +17,7 @@ const router = express.Router()
 
 router.post('/createProducts',upload.single('file'),createProducts)
 router.post('/createCategory',addcategory)
+router.post('/addproductsize',verifyEmpToken,addproductsize)
 router.put('/updateproduct/:product_id',verifyEmpToken,upload.single('file'),updateProduct)
 router.delete('/deleteproduct/:product_id',deleteProduct)
 router.get('/getallProducts',getallProducts)

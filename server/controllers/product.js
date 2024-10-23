@@ -43,7 +43,7 @@ const addproductsize = async (req, res) => {
   ]
 
   db.query('INSERT INTO size (size_value, product_id, price) VALUES(?)', [productsize], (err, data) => {
-    if (err) return res.status(500).json('server error')
+    if (err) return res.status(500).json(err)
     return res.status(200).json('Size has been added.')
   })
 }

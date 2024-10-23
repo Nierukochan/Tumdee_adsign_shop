@@ -6,7 +6,14 @@ import axios from 'axios'
 
 function uploadreciept({ isOpen, onClose, orderId  }) {
 
-  const [order, setOrder] = useState([])
+  const [inputs, setInputs] = useState({
+    reciept_image:"",
+    amount:"",
+    date: "",
+    time: "",
+    transferor: "",
+    order_id: orderId
+  })
   const [images, setImages] = useState([])
   const [imageURLs, setImageURLs] = useState([])
 
@@ -21,16 +28,30 @@ function uploadreciept({ isOpen, onClose, orderId  }) {
     setImages([...e.target.files])
   }
 
-  const handleClick = (e) => {
-    e.preventdefault()
-
-    try {
-      
-    } catch (error) {
-      
-    }
+  const handleChange = (e) => {
+    setInputs((prev) => ({...prev,[e.target.name]: e.target.value,}))
   }
 
+  const handleClick = async (e) => {
+    e.preventDefault()
+
+    const paymentData = new FormData()
+    paymentData.append('file', images[0])
+    paymentData.append('amount', inputs.amount)
+    paymentData.append('date', inputs.date)
+    paymentData.append('time', inputs.time)
+    paymentData.append('transferor', inputs.transferor)
+    paymentData.append('order_id', orderId)
+
+    try {
+      await axios.put('http://localhost:2000/api/order/addpaymentreceipt', paymentData, { withCredentials: true })
+      // console.log('Payment has been updated', inputs)
+      window.location.reload()
+      alert("Payment has been updated");
+    } catch (error) {
+      console.error('Error uploading receipt:', error.response ? error.response.data : error.message)
+    }
+  }
 
   return (
     <>
@@ -46,8 +67,10 @@ function uploadreciept({ isOpen, onClose, orderId  }) {
               <div className="upload-content">
 
                 <div className="qr-img">
-                  <img src="" alt="" />
-                  <h3></h3>
+                  <div className="qr-code">
+                     <img src={`http://localhost:2000/images/myqr.png`} alt="" />
+                  </div>
+                  <p>กรุงไทย 999-999-9999 | สุธาวณี กุลสันตติ</p>
                 </div>
                 
                 <div className="upload-input">
@@ -55,12 +78,12 @@ function uploadreciept({ isOpen, onClose, orderId  }) {
 
                         <div className="input-reciept">
                           <label htmlFor="">วันที่ทำการโอน</label>
-                          <input type="date" />
+                          <input type="date" name='date' onChange={handleChange}/>
                         </div>
 
                         <div className="input-reciept">
                           <label htmlFor="">เวลา</label>
-                          <input type="time" />
+                          <input type="time" name='time' onChange={handleChange} />
                         </div>
 
                   </div>
@@ -68,12 +91,12 @@ function uploadreciept({ isOpen, onClose, orderId  }) {
 
                       <div className="input-reciept">
                           <label htmlFor="">ผู้โอน</label>
-                          <input type="text" />
+                          <input type="text" name='transferor' onChange={handleChange}/>
                         </div>
 
                         <div className="input-reciept">
                           <label htmlFor="">ยอดชำระ</label>
-                          <input type="number" />
+                          <input type="number" name='amount' onChange={handleChange}/>
                         </div>
 
                       </div>
@@ -89,7 +112,7 @@ function uploadreciept({ isOpen, onClose, orderId  }) {
                       </div>
                 </div>
                 <div className="upload-action">
-                    <button>Upload</button>
+                    <button type='submit' onClick={handleClick}>Upload</button>
                 </div>
 
               </div>

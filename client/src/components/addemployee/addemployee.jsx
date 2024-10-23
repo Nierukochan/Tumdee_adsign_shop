@@ -20,20 +20,6 @@ function addemployee() {
     console.log('order has been fetched');
   }, [])
 
-  const handleChange = (e) => {
-    setEmployee([...e.target.name])
-  }
-
-  const handleClick = (e) => {
-    e.preventdefault()
-
-    try {
-      
-    } catch (error) {
-      
-    }
-  }
-
   return (
     <>
       <div className="order-manage-box">
